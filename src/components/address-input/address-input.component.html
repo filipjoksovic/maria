@@ -2,5 +2,7 @@
   <app-dropdown [data]="securityConfigs"></app-dropdown>
 </div>
 <div class="address-input">
-  <input>
+  <form [formGroup]="form">
+    <input formControlName="address">
+  </form>
 </div>

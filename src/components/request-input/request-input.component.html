@@ -1,3 +1,3 @@
 <app-dropdown [data]="requestConfig"></app-dropdown>
 <app-address-input></app-address-input>
-<app-button label="Send"></app-button>
+<app-button label="Send" (clicked)="dispatchSendRequest()"></app-button>

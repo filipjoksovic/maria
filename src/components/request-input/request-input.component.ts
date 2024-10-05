@@ -19,4 +19,8 @@ export class RequestInputComponent implements OnInit {
   ngOnInit() {
   }
 
+  public dispatchSendRequest(): void {
+    console.log("Sending request");
+  }
+
 }
