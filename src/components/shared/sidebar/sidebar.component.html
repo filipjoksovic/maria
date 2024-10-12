@@ -1,5 +1,5 @@
 <div class="sidebar">
-    <div class="section">
+    <div class="section section__header">
         <span>MARIA</span>
 
         <app-sidebar-header></app-sidebar-header>
@@ -9,7 +9,7 @@
         <app-request-link [request]="request" (requestDeleted)="handleRequestDelete($event)"></app-request-link>
         }
     </div>
-    <div class="sidebar-footer">
+    <div class="section section__footer">
         <button mat-button (click)="handleNewRequestClick()">New request</button>
     </div>
 

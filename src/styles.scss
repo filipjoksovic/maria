@@ -1,5 +1,6 @@
 $spacer: 1rem;
 $electric-violet: oklch(53.18% 0.28 296.97);
+$bg-sidebar:#d4aef1;
 $bg-primary: #8E7DBE;
 $bg-surface: #706295;
 $success: #99C1B9;
@@ -360,27 +361,65 @@ app-sidebar {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-}
+    overflow-y: scroll;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    border-radius: 0 2rem 2rem 0;
 
-app-sidebar-header {
-    display: block;
+    .sidebar {
+        background-color: $bg-sidebar;
+        height: 100%;
+        width: 100%;
 
-    .header-section {
         display: flex;
-        gap: $spacer;
+        flex-direction: column;
         align-items: center;
+        justify-content: space-between;
+        overflow-y: scroll;
 
-        & .workspace-picker {
-            display: flex;
-            gap: calc($spacer/2);
+
+        & .section {
+            padding: $spacer/2 0;
+            &__header {
+                position: sticky;
+                top: 0;
+                backdrop-filter: blur(5px) brightness(50%);
+                width: 100%;
+            }
+
+            &__footer {
+                position: sticky;
+                bottom: 0;
+                backdrop-filter: blur(5px) brightness(50%);
+                width: 100%;
+
+            }
         }
 
-        & .workspace-actions {
-            display: flex;
-            gap: calc($spacer / 2);
+        app-sidebar-header {
+
+            display: block;
+
+            .header-section {
+                display: flex;
+                gap: $spacer;
+                align-items: center;
+
+                & .workspace-picker {
+                    display: flex;
+                    gap: calc($spacer/2);
+                }
+
+                & .workspace-actions {
+                    display: flex;
+                    gap: calc($spacer / 2);
+                }
+            }
+
         }
     }
 }
+
+
 
 app-make-request {
     display: flex;
@@ -391,8 +430,11 @@ app-make-request {
 .requests-container {
     display: flex;
     flex-direction: column;
-    gap: calc($spacer);
+    gap: calc($spacer/2);
     width: 100%;
+    flex-grow: 1;
+    padding: $spacer/2 $spacer;
+
 
 }
 
