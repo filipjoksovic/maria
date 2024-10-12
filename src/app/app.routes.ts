@@ -12,6 +12,10 @@ export const routes: Routes = [
             {
                 path: 'new',
                 component: MakeRequestComponent
+            },
+            {
+                path:"request/:id",
+                component: MakeRequestComponent
             }
         ]
     },

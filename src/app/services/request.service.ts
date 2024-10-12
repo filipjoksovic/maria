@@ -10,10 +10,12 @@ import { DataService } from './data.service';
 })
 export class RequestService {
 
+
   private readonly _requests$: BehaviorSubject<RequestModel[]>;
   public readonly requests$: Observable<RequestModel[]>;
 
   private readonly _requestAdded$: Subject<RequestModel> = new Subject<RequestModel>();
+  private readonly _requestDeleted$: Subject<string> = new Subject<string>();
 
   constructor(private readonly router: Router, private readonly dataService: DataService) {
     this._requests$ = new BehaviorSubject<RequestModel[]>(this.fetchRequestsFromDataStore());
@@ -22,6 +24,14 @@ export class RequestService {
     this._requestAdded$.subscribe((requestToAdd) => {
       const currentData = this._requests$.value;
       const newData = [...currentData, requestToAdd];
+      this._requests$.next(newData);
+      this.dataService.store("requests", newData);
+    })
+
+    this._requestDeleted$.subscribe((requestUuid) => {
+      const currentData = this._requests$.value;
+      const newData = currentData.filter(request => request.id !== requestUuid);
+
       this._requests$.next(newData);
       this.dataService.store("requests", newData);
     })
@@ -51,6 +61,13 @@ export class RequestService {
     this.createNewRequest();
     this.router.navigate(['/new'])
   }
+
+  handleRequestDelete(requestUuid: string) {
+    console.log("Deleting request", requestUuid);
+
+    this._requestDeleted$.next(requestUuid);
+  }
+
 }
 
 

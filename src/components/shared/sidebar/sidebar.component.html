@@ -6,7 +6,7 @@
     </div>
     <div class="requests-container">
         @for (request of requests$(); track $index ) {
-        <app-request-link [request]="request"></app-request-link>
+        <app-request-link [request]="request" (requestDeleted)="handleRequestDelete($event)"></app-request-link>
         }
     </div>
     <div class="sidebar-footer">

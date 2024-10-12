@@ -19,6 +19,7 @@ import { RequestLinkComponent } from '../../request-link/request-link.component'
 })
 export class SidebarComponent implements OnInit {
 
+
   public requests$: Signal<RequestModel[] | undefined>;
 
   constructor(private readonly router: Router, private readonly requestService: RequestService) {
@@ -34,5 +35,8 @@ export class SidebarComponent implements OnInit {
     this.requestService.handleNewRequest();
   }
 
+  handleRequestDelete(requestId: string) {
+    this.requestService.handleRequestDelete(requestId);
+  }
 
 }

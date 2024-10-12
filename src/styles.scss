@@ -172,10 +172,7 @@ main {
 }
 
 button {
-    background-color: $electric-violet;
-    color: white;
-    padding: calc($spacer / 2) $spacer;
-    border-radius: calc($spacer/2);
+    background-color: transparent;
     outline: none;
     border: none;
 }
@@ -400,6 +397,11 @@ app-make-request {
 }
 
 .request-link {
+    & a {
+        text-decoration: unset;
+        color: unset;
+    }
+
     display: flex;
     gap: $spacer;
     border: 1px solid transparent;
@@ -407,17 +409,39 @@ app-make-request {
     padding: $spacer / 2;
     border-radius: $spacer;
     cursor: pointer;
+    align-items: center;
+    justify-content: space-between;
+
+    &__remove {
+        opacity: 0 !important;
+        transition: 250ms ease-in-out all;
+
+        & button {
+            background: transparent;
+        }
+    }
 
     &:hover {
         border: 1px solid $bg-surface;
+
+        & button {
+            background: transparent;
+            opacity: 1 !important;
+        }
+    }
+
+    &__details {
+        display: flex;
+        gap: $spacer;
     }
 
     &__method {
         font-weight: bolder;
-        margin:0 !important;
+        margin: 0 !important;
     }
-    &__name{
-        margin:0 !important;
+
+    &__name {
+        margin: 0 !important;
     }
 }
 
