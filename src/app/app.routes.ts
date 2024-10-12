@@ -7,7 +7,13 @@ import { MakeRequestComponent } from '../pages/make-request/make-request.compone
 export const routes: Routes = [
     {
         path: '',
-        component: HomePageComponent
+        component: HomePageComponent,
+        children: [
+            {
+                path: 'new',
+                component: MakeRequestComponent
+            }
+        ]
     },
     {
         path: 'welcome',
@@ -17,8 +23,5 @@ export const routes: Routes = [
         path: 'setup',
         component: SetupComponent
     },
-    {
-        path: 'new',
-        component: MakeRequestComponent
-    }
+
 ];

@@ -8,6 +8,15 @@ $info: #56CBF9;
 $text-dark: #1B2021;
 $text-light: #FFFDF7;
 $border-light: #C6E0FF;
+$color-success: #2ea544;
+$color-error: #ff6e4e;
+$color-caution: #ffce22;
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 
 /* You can add global styles to this file, and also import other style files */
 html {
@@ -74,21 +83,7 @@ main {
     max-width: 9.2rem;
 }
 
-.content {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    max-width: 700px;
-    margin-bottom: 3rem;
-}
-
-.content h1 {
-    margin-top: 1.75rem;
-}
-
-.content p {
-    margin-top: 1.5rem;
-}
+.content {}
 
 .divider {
     width: 1px;
@@ -192,6 +187,31 @@ button {
     padding: $spacer;
 }
 
+app-request-name {
+    display: block;
+}
+
+.input {
+    &__transparent {
+        background: transparent;
+        outline: none;
+        border: 1px solid transparent;
+        padding: $spacer /2;
+        font-size: $spacer * 2;
+        border-radius: $spacer;
+        transition: 250ms ease-in-out all;
+
+        &:hover {
+            border: 1px solid $bg-surface;
+        }
+
+        &:focus {
+            background: $bg-surface;
+            color: $text-light;
+        }
+    }
+}
+
 input.form-control {
     outline: none;
     padding: calc($spacer/2) $spacer;
@@ -201,6 +221,7 @@ input.form-control {
 app-request-input {
     display: flex;
     width: 100%;
+    align-items: center;
 }
 
 app-address-input {
@@ -213,14 +234,18 @@ app-address-input {
         flex-grow: 1;
 
         input {
+            background-color: $bg-primary;
             width: 100%;
             padding: calc($spacer) calc($spacer /2);
-            border: 1px solid $border-light;
-            border-radius: calc($spacer /2);
+            border: none;
+            border-radius: calc($spacer * 2);
             outline: none;
         }
 
-        &__prefix {}
+        &__prefix {
+            display: flex;
+            align-items: center;
+        }
     }
 }
 
@@ -230,11 +255,15 @@ app-request-input {
     width: 100%;
 }
 
+.content {
+    padding: calc($spacer / 2) $spacer;
+}
+
 .dropdown {
     position: relative;
     background-color: $bg-primary;
-    padding: $spacer;
-    border-radius: $spacer/2;
+    padding: calc($spacer / 2) $spacer;
+    border-radius: $spacer;
     width: 100%;
     transition: 250ms ease-in-out background;
     cursor: pointer;
@@ -292,5 +321,116 @@ app-request-input {
     &:hover {
         background: $bg-surface;
         border-radius: calc($spacer/2);
+    }
+}
+
+/** Layouts */
+
+app-home {
+    height: 100dvh;
+    width: 100dvh;
+
+    // display: grid;
+
+    // grid-template: "sidebar content";
+    // grid-template-columns: 3fr 7fr;
+
+    // & app-sidebar {
+    //     grid-area: sidebar;
+    //     background-color: $bg-primary;
+
+    // }
+
+    & mat-drawer-container {
+        height: 100%;
+    }
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+app-sidebar {
+    display: flex;
+    height: 100%;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+app-sidebar-header {
+    display: block;
+
+    .header-section {
+        display: flex;
+        gap: $spacer;
+        align-items: center;
+
+        & .workspace-picker {
+            display: flex;
+            gap: calc($spacer/2);
+        }
+
+        & .workspace-actions {
+            display: flex;
+            gap: calc($spacer / 2);
+        }
+    }
+}
+
+app-make-request {
+    display: flex;
+    flex-direction: column;
+    gap: $spacer;
+}
+
+.requests-container {
+    display: flex;
+    flex-direction: column;
+    gap: calc($spacer);
+    width: 100%;
+
+}
+
+.request-link {
+    display: flex;
+    gap: $spacer;
+    border: 1px solid transparent;
+    transition: 250ms ease-in-out all;
+    padding: $spacer / 2;
+    border-radius: $spacer;
+    cursor: pointer;
+
+    &:hover {
+        border: 1px solid $bg-surface;
+    }
+
+    &__method {
+        font-weight: bolder;
+        margin:0 !important;
+    }
+    &__name{
+        margin:0 !important;
+    }
+}
+
+.text {
+    &-green {
+        color: $color-success;
+    }
+
+    &-red {
+        color: $color-error;
+    }
+
+    &-orange {
+        color: $color-caution;
     }
 }

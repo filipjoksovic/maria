@@ -1,0 +1,15 @@
+$bg-sidebar: #d4aef1;
+$spacer: 1rem;
+
+.sidebar {
+    background-color: $bg-sidebar;
+    height: 100%;
+    padding: $spacer;
+    width: 100%;
+
+    border-radius: 0 2rem 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}

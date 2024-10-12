@@ -1,0 +1,17 @@
+<div class="sidebar">
+    <div class="section">
+        <span>MARIA</span>
+
+        <app-sidebar-header></app-sidebar-header>
+    </div>
+    <div class="requests-container">
+        @for (request of requests$(); track $index ) {
+        <app-request-link [request]="request"></app-request-link>
+        }
+    </div>
+    <div class="sidebar-footer">
+        <button mat-button (click)="handleNewRequestClick()">New request</button>
+    </div>
+
+
+</div>
