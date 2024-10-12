@@ -1,2 +1,2 @@
-<app-request-name></app-request-name>
-<app-request-input></app-request-input>
+<app-request-name [request]="request()" (nameBlurred)="handleNameChange($event)"></app-request-name>
+<app-request-input [request]="request()"></app-request-input>

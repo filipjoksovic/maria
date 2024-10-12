@@ -449,7 +449,6 @@ app-make-request {
   gap: $spacer;
   border: 1px solid transparent;
   transition: 250ms ease-in-out all;
-  padding: $spacer / 2;
   border-radius: $spacer;
   cursor: pointer;
   align-items: center;
@@ -466,7 +465,7 @@ app-make-request {
 
   &__active {
     background: $bg-surface;
-    color:white !important;
+    color: white !important;
   }
 
   &:hover {
@@ -481,6 +480,8 @@ app-make-request {
   &__details {
     display: flex;
     gap: $spacer;
+    width: 100%;
+    padding: $spacer / 2;
   }
 
   &__method {

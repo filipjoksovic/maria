@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { AddressInputComponent } from '../address-input/address-input.component';
-import { DropdownComponent } from "../core/dropdown/dropdown.component";
-import { RequestConfiguration, typeConfigs } from '../../app/model/request-type.config';
-import { ButtonComponent } from '../core/button/button.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {AddressInputComponent} from '../address-input/address-input.component';
+import {DropdownComponent} from "../core/dropdown/dropdown.component";
+import {RequestConfiguration, typeConfigs} from '../../app/model/request-type.config';
+import {ButtonComponent} from '../core/button/button.component';
+import {RequestModel} from "../../app/model/request.model";
 
 @Component({
   selector: 'app-request-input',
@@ -14,7 +15,11 @@ import { ButtonComponent } from '../core/button/button.component';
 export class RequestInputComponent implements OnInit {
   protected requestConfig: RequestConfiguration = typeConfigs;
 
-  constructor() { }
+  @Input()
+  public request!: RequestModel | undefined;
+
+  constructor() {
+  }
 
   ngOnInit() {
   }
