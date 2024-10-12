@@ -1,7 +1,7 @@
-<div class="request-link">
+<div class="request-link" [class]="isActive$() ? 'request-link__active' : ''">
   <a class="request-link__details" [routerLink]="'request/'+request.id">
-    <p class="request-link__method" [class]="'text-'+getRequestMethodColor()">{{request.method}}</p>
-    <p class="request-link__name">{{request.name}}</p>
+    <p class="request-link__method" [class]="'text-'+getRequestMethodColor()">{{ request.method }}</p>
+    <p class="request-link__name">{{ request.name }}</p>
   </a>
   <button class="request-link__remove" (click)="handleDeleteRequest(request.id)">
     <mat-icon fontIcon="close"></mat-icon>

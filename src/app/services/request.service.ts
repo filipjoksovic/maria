@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, Subject, Subscriber } from 'rxjs';
-import { RequestModel } from '../model/request.model';
-import { RequestTypeEnum } from '../model/request-type.enum';
-import { DataService } from './data.service';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {BehaviorSubject, filter, find, map, Observable, Subject, Subscriber, switchMap, tap} from 'rxjs';
+import {RequestModel} from '../model/request.model';
+import {RequestTypeEnum} from '../model/request-type.enum';
+import {DataService} from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,11 @@ export class RequestService {
 
   private readonly _requestAdded$: Subject<RequestModel> = new Subject<RequestModel>();
   private readonly _requestDeleted$: Subject<string> = new Subject<string>();
+
+  private readonly _activeRequest$: Subject<RequestModel> = new Subject();
+  public readonly activeRequest$ = this._activeRequest$.asObservable();
+
+  private readonly _requestSelected$: Subject<string> = new Subject();
 
   constructor(private readonly router: Router, private readonly dataService: DataService) {
     this._requests$ = new BehaviorSubject<RequestModel[]>(this.fetchRequestsFromDataStore());
@@ -35,6 +40,13 @@ export class RequestService {
       this._requests$.next(newData);
       this.dataService.store("requests", newData);
     })
+
+    this._requestSelected$.pipe(
+      switchMap(requestId => {
+        return this.requests$.pipe(map(requests => requests.find(request => request.id === requestId)))
+      }),
+      filter(request => request !== null && request !== undefined),
+      tap(request => this._activeRequest$.next(request))).subscribe();
 
   }
 
@@ -68,6 +80,13 @@ export class RequestService {
     this._requestDeleted$.next(requestUuid);
   }
 
+  setActiveRequest(id: string | null) {
+    if (id == null) {
+      throw new Error("id not found");
+    }
+
+    this._requestSelected$.next(id);
+  }
 }
 
 

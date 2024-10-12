@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, Signal } from '@angular/core';
-import { RequestModel } from '../../app/model/request.model';
-import { NgClass } from '@angular/common';
-import { typeConfigs } from '../../app/model/request-type.config';
-import { MatIcon } from '@angular/material/icon';
-import { ActivatedRoute, ParamMap, Route, Router, RouterLink } from '@angular/router';
-import { map, Observable, tap } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { RequestSecurity } from '../../app/model/request-security.enum';
-import { RequestService } from '../../app/services/request.service';
+import {Component, EventEmitter, Input, OnInit, Output, Signal} from '@angular/core';
+import {RequestModel} from '../../app/model/request.model';
+import {NgClass} from '@angular/common';
+import {typeConfigs} from '../../app/model/request-type.config';
+import {MatIcon} from '@angular/material/icon';
+import {ActivatedRoute, ParamMap, Route, Router, RouterLink} from '@angular/router';
+import {map, Observable, tap} from 'rxjs';
+import {toSignal} from '@angular/core/rxjs-interop';
+import {RequestSecurity} from '../../app/model/request-security.enum';
+import {RequestService} from '../../app/services/request.service';
 
 @Component({
   selector: 'app-request-link',
@@ -18,22 +18,16 @@ import { RequestService } from '../../app/services/request.service';
 })
 export class RequestLinkComponent implements OnInit {
 
-  @Input({ required: true })
+  @Input({required: true})
   public request!: RequestModel;
 
   @Output()
   public requestDeleted: EventEmitter<string> = new EventEmitter<string>();
 
-  public isActive$!: Signal<boolean>;
+  public isActive$!: Signal<boolean | undefined>;
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly requestService: RequestService) {
-
-    this.route.paramMap.pipe(tap(console.log), map((paramMap: ParamMap) =>
-      paramMap.has("id")
-    ), tap(console.log)).subscribe();
-    this.isActive$ = toSignal(this.route.paramMap.pipe(tap(console.log), map((paramMap: ParamMap) =>
-      paramMap.has("id")
-    ), tap(console.log)));
+    this.isActive$ = toSignal(this.requestService.activeRequest$.pipe(map(request => request.id === this.request.id)));
 
   }
 
