@@ -7,6 +7,7 @@ import {RequestService} from "../../app/services/request.service";
 import {filter} from "rxjs";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
+import {RequestTypeEnum} from "../../app/model/request-type.enum";
 
 @Component({
   selector: 'app-make-request',
@@ -51,4 +52,25 @@ export class MakeRequestComponent implements OnInit, OnChanges {
     })
   }
 
+  handleMethodChange($event: RequestTypeEnum) {
+    if (this.request() === undefined) {
+      return;
+    }
+    console.log('hree');
+
+    this.requestService.updateRequest(this.request()!, {
+      method: $event
+    })
+  }
+
+  handleUrlChange($event: string) {
+    if (this.request() === undefined) {
+      return;
+    }
+    console.log('hree');
+
+    this.requestService.updateRequest(this.request()!, {
+      url: $event
+    })
+  }
 }

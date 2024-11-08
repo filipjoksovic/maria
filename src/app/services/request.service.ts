@@ -85,6 +85,7 @@ export class RequestService {
     const request: RequestModel = {
       id: crypto.randomUUID(),
       name: "New Request",
+      url: '',
       method: RequestTypeEnum.GET,
       params: [],
       headers: []

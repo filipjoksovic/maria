@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { RequestSecurityConfiguration, securityConfigs } from '../../app/model/request-security.config';
-import { KeyValuePipe, NgFor } from '@angular/common';
-import { DropdownComponent } from "../core/dropdown/dropdown.component";
-import { ConfigurationType } from '../../app/model/core/data-config.type';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {RequestSecurityConfiguration, securityConfigs} from '../../app/model/request-security.config';
+import {KeyValuePipe, NgFor} from '@angular/common';
+import {DropdownComponent} from "../core/dropdown/dropdown.component";
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-address-input',
@@ -18,6 +17,9 @@ export class AddressInputComponent implements OnInit {
 
   public form: FormGroup<{ address: FormControl<string | null> }>
 
+  @Output()
+  urlChanged: EventEmitter<string> = new EventEmitter();
+
   constructor(formBuilder: FormBuilder) {
     this.form = formBuilder.group({
       address: new FormControl<string>('', Validators.required)
@@ -27,4 +29,8 @@ export class AddressInputComponent implements OnInit {
   ngOnInit() {
   }
 
+  handleUrlChanged($event: Event) {
+    this.urlChanged.emit(($event.target as HTMLInputElement).value);
+
+  }
 }

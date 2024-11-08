@@ -3,6 +3,6 @@
 </div>
 <div class="address-input">
   <form [formGroup]="form">
-    <input formControlName="address">
+    <input formControlName="address" (change)="handleUrlChanged($event)">
   </form>
 </div>

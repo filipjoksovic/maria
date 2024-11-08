@@ -196,9 +196,9 @@ app-request-name {
     outline: none;
     border: 1px solid transparent;
     padding: $spacer /2;
-    font-size: $spacer * 2;
     border-radius: $spacer;
     transition: 250ms ease-in-out all;
+    width: 100%;
 
     &:hover {
       border: 1px solid $bg-surface;
@@ -208,6 +208,10 @@ app-request-name {
       background: $bg-surface;
       color: $text-light;
     }
+  }
+
+  &__bold {
+    font-weight: bold;
   }
 }
 
