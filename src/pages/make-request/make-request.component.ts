@@ -8,12 +8,14 @@ import {filter} from "rxjs";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {JsonPipe} from "@angular/common";
 import {RequestTypeEnum} from "../../app/model/request-type.enum";
+import {RequestResultComponent} from "../../components/request-result/request-result.component";
+import {MatGridListModule} from "@angular/material/grid-list";
 
 @Component({
   selector: 'app-make-request',
   templateUrl: './make-request.component.html',
   styleUrls: ['./make-request.component.css'],
-  imports: [RequestInputComponent, RequestNameComponent, JsonPipe],
+  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule],
   standalone: true
 })
 export class MakeRequestComponent implements OnInit, OnChanges {
@@ -72,5 +74,10 @@ export class MakeRequestComponent implements OnInit, OnChanges {
     this.requestService.updateRequest(this.request()!, {
       url: $event
     })
+  }
+
+  handleSendRequest() {
+    console.log('hree');
+    this.requestService.executeRequest(this.request()!);
   }
 }

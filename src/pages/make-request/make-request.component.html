@@ -1,2 +1,9 @@
-<app-request-name [request]="request()" (nameBlurred)="handleNameChange($event)"></app-request-name>
-<app-request-input [request]="request()" (methodChanged)="handleMethodChange($event)" (urlChanged)="handleUrlChange($event)"></app-request-input>
+<div class="make-request-container">
+  <div class="make-request-container__topbar">
+    <app-request-name [request]="request()" (nameBlurred)="handleNameChange($event)"></app-request-name>
+    <app-request-input [request]="request()" (methodChanged)="handleMethodChange($event)"
+                       (urlChanged)="handleUrlChange($event)" (sendRequest)="handleSendRequest()"></app-request-input>
+  </div>
+
+  <app-request-result class="w-100 make-request-container__results"></app-request-result>
+</div>

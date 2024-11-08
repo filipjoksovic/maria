@@ -1,9 +1,24 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {BehaviorSubject, filter, find, map, merge, Observable, of, Subject, Subscriber, switchMap, tap, zip} from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  find,
+  map,
+  merge,
+  Observable,
+  of,
+  Subject,
+  Subscriber,
+  switchMap,
+  tap,
+  zip
+} from 'rxjs';
 import {RequestModel} from '../model/request.model';
 import {RequestTypeEnum} from '../model/request-type.enum';
 import {DataService} from './data.service';
+import {HttpClient} from "@angular/common/http";
+import {RequestResultService} from "./request-result.service";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +39,7 @@ export class RequestService {
 
   private readonly _requestUpdated$: Subject<{ id: string } & Partial<RequestModel>> = new Subject();
 
-  constructor(private readonly router: Router, private readonly dataService: DataService) {
+  constructor(private readonly router: Router, private readonly dataService: DataService, private readonly http: HttpClient, private readonly requestResultService: RequestResultService) {
     this._requests$ = new BehaviorSubject<RequestModel[]>(this.fetchRequestsFromDataStore());
     this.requests$ = this._requests$.asObservable();
 
@@ -125,6 +140,51 @@ export class RequestService {
       ...request,
       ...updateData
     })
+
+  }
+
+  executeRequest(requestModel: RequestModel) {
+    console.log("Received request to execute", requestModel)
+    switch (requestModel.method) {
+      case RequestTypeEnum.GET:
+        console.log("Executing GET request");
+        this.handleGet(requestModel);
+        break;
+      case RequestTypeEnum.POST:
+        console.log("Executing POST request");
+        this.handlePost(requestModel);
+        break;
+      case RequestTypeEnum.PUT:
+        console.log("Executing PUT request");
+        this.handlePut(requestModel);
+        break;
+      case RequestTypeEnum.DELETE:
+        console.log("Executing DELETE request");
+        this.handleDelete(requestModel);
+        break;
+      default:
+        console.log("Unknown request type");
+        break;
+
+    }
+  }
+
+  private handleDelete(requestModel: RequestModel) {
+
+  }
+
+  private handlePut(requestModel: RequestModel) {
+
+  }
+
+  private handleGet(requestModel: RequestModel) {
+    this.http.get(requestModel.url).subscribe((response: any) => {
+      console.log(response);
+      this.requestResultService.onResultReceived(requestModel, response);
+    });
+  }
+
+  private handlePost(requestModel: RequestModel) {
 
   }
 }

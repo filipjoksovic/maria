@@ -1,0 +1,8 @@
+<p>Results</p>
+<div class="results-container">
+  @if (requestResult() !== "") {
+    <textarea disabled [value]="requestResult()"></textarea>
+  } @else {
+    <p>No result. Try making a request first.</p>
+  }
+</div>

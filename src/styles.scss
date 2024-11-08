@@ -85,6 +85,8 @@ main {
 }
 
 .content {
+  max-height: 100dvh;
+  overflow-y: scroll;
 }
 
 .divider {
@@ -332,6 +334,7 @@ app-request-input {
 app-home {
   height: 100dvh;
   width: 100dvh;
+  max-height: 100dvh;
 
   // display: grid;
 
@@ -511,3 +514,73 @@ app-make-request {
     color: $color-caution;
   }
 }
+
+.w-100 {
+  width: 100%;
+}
+
+app-request-result {
+  display: flex;
+  flex-direction: column;
+
+  & .results-container {
+    width: 100%;
+    flex-grow: 1;
+
+    & textarea {
+      width: 100%;
+      height: 100%;
+      padding: $spacer;
+    }
+  }
+}
+
+
+textarea, .mat-mdc-text-field-wrapper {
+  border-radius: $spacer !important;
+}
+
+.flex {
+  display: flex;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.align-start {
+  align-items: start;
+}
+
+.justify-start {
+  justify-content: start;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+app-make-request {
+  height: 100%;
+}
+
+.make-request-container {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer;
+  height: 100%;
+
+  &__topbar {
+    flex-grow: 0;
+  }
+
+  &__results {
+    flex-grow: 1;
+    flex: 1;
+  }
+}
+

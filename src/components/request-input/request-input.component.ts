@@ -36,6 +36,7 @@ export class RequestInputComponent implements OnInit {
 
   public dispatchSendRequest(): void {
     console.log("Sending request");
+    this.sendRequest.emit();
   }
 
   methodSelected($event: number | symbol | string) {
