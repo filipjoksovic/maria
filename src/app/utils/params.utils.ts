@@ -17,3 +17,14 @@ export const mapToQueryParameters = (params: QueryParameterRow[]): QueryParamete
     }
   })
 }
+
+export const isValidQueryParameter = (param: QueryParametersModel): boolean => {
+  return param.name !== '' && param.value !== '';
+}
+
+export const trimParameters = (param: QueryParametersModel): QueryParametersModel => {
+  return {
+    name: param.name.trim(),
+    value: param.value.trim()
+  }
+}
