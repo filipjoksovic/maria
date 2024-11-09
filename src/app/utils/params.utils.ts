@@ -1,5 +1,6 @@
 import {QueryParameterRow} from "../../components/request-query-parameters/request-query-parameters.component";
-import {QueryParametersModel} from "../model/request.model";
+import {HeadersModel, QueryParametersModel} from "../model/request.model";
+import {RequestHeaderRow} from "../../components/request-headers/request-headers.component";
 
 export const isValidParameter = (row: QueryParameterRow): boolean => {
   return row.name !== '' && row.text_value !== '' && row.description !== '';
@@ -27,4 +28,13 @@ export const trimParameters = (param: QueryParametersModel): QueryParametersMode
     name: param.name.trim(),
     value: param.value.trim()
   }
+}
+
+export const mapToHeaders = (headers: RequestHeaderRow[]): HeadersModel[] => {
+  return headers.map(row => {
+    return {
+      name: row.name,
+      value: row.text_value
+    }
+  })
 }

@@ -17,10 +17,17 @@ import {
 import {QueryParametersModel, RequestModel} from '../model/request.model';
 import {RequestTypeEnum} from '../model/request-type.enum';
 import {DataService} from './data.service';
-import {HttpClient, HttpParams, HttpParamsOptions} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams, HttpParamsOptions} from "@angular/common/http";
 import {RequestResultService} from "./request-result.service";
 import {QueryParameterRow} from "../../components/request-query-parameters/request-query-parameters.component";
-import {isValidParameter, isValidQueryParameter, mapToQueryParameters, trimParameters} from "../utils/params.utils";
+import {
+  isValidParameter,
+  isValidQueryParameter,
+  mapToHeaders,
+  mapToQueryParameters,
+  trimParameters
+} from "../utils/params.utils";
+import {RequestHeaderRow} from "../../components/request-headers/request-headers.component";
 
 @Injectable({
   providedIn: 'root'
@@ -172,18 +179,35 @@ export class RequestService {
   }
 
   private handleDelete(requestModel: RequestModel) {
-
+    const options = {
+      params: this.createHttpParams(requestModel),
+      headers: this.createHeaders(requestModel)
+    }
+    console.log("Options", options);
+    this.http.delete(requestModel.url, options).subscribe((response: any) => {
+      console.log(response);
+      this.requestResultService.onResultReceived(requestModel, response);
+    });
   }
 
   private handlePut(requestModel: RequestModel) {
-
+    const options = {
+      params: this.createHttpParams(requestModel),
+      headers: this.createHeaders(requestModel)
+    }
+    console.log("Options", options);
+    this.http.put(requestModel.url, options).subscribe((response: any) => {
+      console.log(response);
+      this.requestResultService.onResultReceived(requestModel, response);
+    });
   }
 
   private handleGet(requestModel: RequestModel) {
     const options = {
-      params: this.createHttpParams(requestModel)
+      params: this.createHttpParams(requestModel),
+      headers: this.createHeaders(requestModel)
     }
-
+    console.log("Options", options);
     this.http.get(requestModel.url, options).subscribe((response: any) => {
       console.log(response);
       this.requestResultService.onResultReceived(requestModel, response);
@@ -200,9 +224,25 @@ export class RequestService {
 
   }
 
+  private createHeaders(requestModel: RequestModel): HttpHeaders {
+    let headers = new HttpHeaders();
+    requestModel.headers.map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
+      headers = headers.set(param.name, param.value);
+    });
+    return headers;
+  }
+
 
   private handlePost(requestModel: RequestModel) {
-
+    const options = {
+      params: this.createHttpParams(requestModel),
+      headers: this.createHeaders(requestModel)
+    }
+    console.log("Options", options);
+    this.http.post(requestModel.url, options).subscribe((response: any) => {
+      console.log(response);
+      this.requestResultService.onResultReceived(requestModel, response);
+    });
   }
 
   changeQueryParameters(requestModel: RequestModel, $event: QueryParameterRow[]) {
@@ -213,6 +253,12 @@ export class RequestService {
   }
 
 
+  changeHeaders(requestModel: RequestModel, $event: RequestHeaderRow[]) {
+    this._requestUpdated$.next({
+      id: requestModel.id,
+      headers: mapToHeaders($event)
+    });
+  }
 }
 
 

@@ -15,12 +15,13 @@ import {
   RequestQueryParametersComponent
 } from "../../components/request-query-parameters/request-query-parameters.component";
 import {MatTabsModule} from "@angular/material/tabs";
+import {RequestHeaderRow, RequestHeadersComponent} from "../../components/request-headers/request-headers.component";
 
 @Component({
   selector: 'app-make-request',
   templateUrl: './make-request.component.html',
   styleUrls: ['./make-request.component.css'],
-  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule],
+  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule, RequestHeadersComponent],
   standalone: true
 })
 export class MakeRequestComponent implements OnInit, OnChanges {
@@ -89,4 +90,10 @@ export class MakeRequestComponent implements OnInit, OnChanges {
   handleQueryParametersChange($event: QueryParameterRow[]) {
     this.requestService.changeQueryParameters(this.request()!, $event);
   }
+
+  handleRequestHeadersChange($event: RequestHeaderRow[]) {
+    this.requestService.changeHeaders(this.request()!, $event);
+
+  }
+
 }
