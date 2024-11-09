@@ -14,11 +14,13 @@ import {
   tap,
   zip
 } from 'rxjs';
-import {RequestModel} from '../model/request.model';
+import {QueryParametersModel, RequestModel} from '../model/request.model';
 import {RequestTypeEnum} from '../model/request-type.enum';
 import {DataService} from './data.service';
 import {HttpClient} from "@angular/common/http";
 import {RequestResultService} from "./request-result.service";
+import {QueryParameterRow} from "../../components/request-query-parameters/request-query-parameters.component";
+import {isValidParameter, mapToQueryParameters} from "../utils/params.utils";
 
 @Injectable({
   providedIn: 'root'
@@ -187,6 +189,15 @@ export class RequestService {
   private handlePost(requestModel: RequestModel) {
 
   }
+
+  changeQueryParameters(requestModel: RequestModel, $event: QueryParameterRow[]) {
+    this._requestUpdated$.next({
+      id: requestModel.id,
+      params: mapToQueryParameters($event)
+    });
+  }
+
+
 }
 
 

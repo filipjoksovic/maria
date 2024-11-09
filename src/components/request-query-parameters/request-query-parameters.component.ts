@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
@@ -12,9 +12,12 @@ import {ParameterTableComponent, RowChangeEvent} from "../core/parameter-table/p
   styleUrl: './request-query-parameters.component.scss'
 })
 export class RequestQueryParametersComponent {
-  displayedColumns: string[] = ['position', 'name', 'text_value', 'description'];
-  dataSource = ELEMENT_DATA;
-  dataSourceLabels: { [key in keyof QueryParameterRow]: string } = {
+
+  @Output()
+  public queryParametersChanged: EventEmitter<QueryParameterRow[]> = new EventEmitter<QueryParameterRow[]>();
+
+  queryParameters = ELEMENT_DATA;
+  queryParameterLabels: { [key in keyof QueryParameterRow]: string } = {
     select: 'Select',
     position: 'Position',
     name: 'Name',
@@ -22,24 +25,25 @@ export class RequestQueryParametersComponent {
     description: 'Description'
   };
 
-  dataSourceKeys = Object.keys(ELEMENT_DATA[0]) as StringKeys<QueryParameterRow>[];
-
   handleOnChange({event, rowData, prop}: RowChangeEvent<QueryParameterRow>) {
     const value = (event.target as HTMLInputElement).value;
-    if (value) {
-      rowData[prop] = value;
-      if (!this.containsBlankRow(this.dataSource)) {
-        this.dataSource = [...this.dataSource, {
-          select: true,
-          name: '',
-          position: this.dataSource.length + 1,
-          text_value: '',
-          description: ''
-        }];
-      } else {
-        this.dataSource = [...this.dataSource];
-      }
+    if (!value) {
+      return;
     }
+    rowData[prop] = value;
+    if (!this.containsBlankRow(this.queryParameters)) {
+      this.queryParameters = [...this.queryParameters, {
+        select: true,
+        name: '',
+        position: this.queryParameters.length + 1,
+        text_value: '',
+        description: ''
+      }];
+    } else {
+      this.queryParameters = [...this.queryParameters];
+    }
+
+    this.queryParametersChanged.emit(this.queryParameters);
   }
 
   public containsBlankRow(dataSource: QueryParameterRow[]): boolean {

@@ -6,7 +6,7 @@
   </div>
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
     <mat-tab label="Parameters">
-      <app-request-query-parameters></app-request-query-parameters>
+      <app-request-query-parameters (queryParametersChanged)="handleQueryParametersChange($event)"></app-request-query-parameters>
     </mat-tab>
     <mat-tab label="Authorization"> Content 2</mat-tab>
     <mat-tab label="Headers"> Content 3</mat-tab>

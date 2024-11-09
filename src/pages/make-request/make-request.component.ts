@@ -11,6 +11,7 @@ import {RequestTypeEnum} from "../../app/model/request-type.enum";
 import {RequestResultComponent} from "../../components/request-result/request-result.component";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {
+  QueryParameterRow,
   RequestQueryParametersComponent
 } from "../../components/request-query-parameters/request-query-parameters.component";
 import {MatTabsModule} from "@angular/material/tabs";
@@ -83,5 +84,9 @@ export class MakeRequestComponent implements OnInit, OnChanges {
   handleSendRequest() {
     console.log('hree');
     this.requestService.executeRequest(this.request()!);
+  }
+
+  handleQueryParametersChange($event: QueryParameterRow[]) {
+    this.requestService.changeQueryParameters(this.request()!, $event);
   }
 }

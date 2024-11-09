@@ -5,6 +5,11 @@ export interface RequestModel {
     name: string;
     url:string;
     method: RequestTypeEnum;
-    params: string[];
+    params: QueryParametersModel[];
     headers: string[];
+}
+
+export interface QueryParametersModel{
+  name:string;
+  value:string;
 }
