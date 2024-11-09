@@ -15,12 +15,13 @@ export class RequestQueryParametersComponent {
   displayedColumns: string[] = ['position', 'name', 'text_value', 'description'];
   dataSource = ELEMENT_DATA;
   dataSourceLabels: { [key in keyof QueryParameterRow]: string } = {
+    select: 'Select',
     position: 'Position',
     name: 'Name',
     text_value: 'Value',
     description: 'Description'
   };
-  
+
   dataSourceKeys = Object.keys(ELEMENT_DATA[0]) as StringKeys<QueryParameterRow>[];
 
   handleOnChange({event, rowData, prop}: RowChangeEvent<QueryParameterRow>) {
@@ -29,6 +30,7 @@ export class RequestQueryParametersComponent {
       rowData[prop] = value;
       if (!this.containsBlankRow(this.dataSource)) {
         this.dataSource = [...this.dataSource, {
+          select: true,
           name: '',
           position: this.dataSource.length + 1,
           text_value: '',
@@ -46,6 +48,7 @@ export class RequestQueryParametersComponent {
 }
 
 export interface QueryParameterRow {
+  select: boolean;
   name: string;
   position: number;
   text_value: string;
@@ -53,7 +56,7 @@ export interface QueryParameterRow {
 }
 
 const ELEMENT_DATA: QueryParameterRow[] = [
-  {position: 1, name: '', text_value: '', description: ''},
+  {select: true, position: 1, name: '', text_value: '', description: ''},
 ];
 
 export type StringKeys<T> = {
