@@ -4,6 +4,19 @@
     <app-request-input [request]="request()" (methodChanged)="handleMethodChange($event)"
                        (urlChanged)="handleUrlChange($event)" (sendRequest)="handleSendRequest()"></app-request-input>
   </div>
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+    <mat-tab label="Parameters">
+      <app-request-query-parameters></app-request-query-parameters>
+    </mat-tab>
+    <mat-tab label="Authorization"> Content 2</mat-tab>
+    <mat-tab label="Headers"> Content 3</mat-tab>
+    <mat-tab label="Body"> Content 3</mat-tab>
+    <mat-tab label="Pre-request script"> Content 3</mat-tab>
+    <mat-tab label="Tests"> Content 3</mat-tab>
+    <mat-tab label="Settings"> Content 3</mat-tab>
+    <mat-tab label="Headers"> Content 3</mat-tab>
+
+  </mat-tab-group>
 
   <app-request-result class="w-100 make-request-container__results"></app-request-result>
 </div>

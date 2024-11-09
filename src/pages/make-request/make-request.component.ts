@@ -10,12 +10,16 @@ import {JsonPipe} from "@angular/common";
 import {RequestTypeEnum} from "../../app/model/request-type.enum";
 import {RequestResultComponent} from "../../components/request-result/request-result.component";
 import {MatGridListModule} from "@angular/material/grid-list";
+import {
+  RequestQueryParametersComponent
+} from "../../components/request-query-parameters/request-query-parameters.component";
+import {MatTabsModule} from "@angular/material/tabs";
 
 @Component({
   selector: 'app-make-request',
   templateUrl: './make-request.component.html',
   styleUrls: ['./make-request.component.css'],
-  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule],
+  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule],
   standalone: true
 })
 export class MakeRequestComponent implements OnInit, OnChanges {
