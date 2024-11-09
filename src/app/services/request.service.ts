@@ -17,10 +17,10 @@ import {
 import {QueryParametersModel, RequestModel} from '../model/request.model';
 import {RequestTypeEnum} from '../model/request-type.enum';
 import {DataService} from './data.service';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams, HttpParamsOptions} from "@angular/common/http";
 import {RequestResultService} from "./request-result.service";
 import {QueryParameterRow} from "../../components/request-query-parameters/request-query-parameters.component";
-import {isValidParameter, mapToQueryParameters} from "../utils/params.utils";
+import {isValidParameter, isValidQueryParameter, mapToQueryParameters, trimParameters} from "../utils/params.utils";
 
 @Injectable({
   providedIn: 'root'
@@ -180,11 +180,26 @@ export class RequestService {
   }
 
   private handleGet(requestModel: RequestModel) {
-    this.http.get(requestModel.url).subscribe((response: any) => {
+    const options = {
+      params: this.createHttpParams(requestModel)
+    }
+
+    this.http.get(requestModel.url, options).subscribe((response: any) => {
       console.log(response);
       this.requestResultService.onResultReceived(requestModel, response);
     });
   }
+
+  private createHttpParams(requestModel: RequestModel): HttpParams {
+    let httpParams = new HttpParams();
+    requestModel.params.map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
+      httpParams = httpParams.append(param.name, param.value);
+    });
+
+    return httpParams;
+
+  }
+
 
   private handlePost(requestModel: RequestModel) {
 
