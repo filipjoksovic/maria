@@ -2,5 +2,5 @@
   <app-dropdown formControlName="method" label='Method' [data]="requestConfig"></app-dropdown>
   <app-dropdown formControlName="type" label="Type" [data]="securityConfigs"></app-dropdown>
   <app-address-input formControlName="url"></app-address-input>
-  <app-button label="Send" (clicked)="dispatchSendRequest()"></app-button>
+  <button mat-button (click)="dispatchSendRequest()">Send</button>
 </form>

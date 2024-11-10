@@ -9,13 +9,14 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {filter, map, pairwise, startWith, tap} from "rxjs";
 import {securityConfigs} from "../../app/model/request-security.config";
 import {RequestSecurity} from "../../app/model/request-security.enum";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-request-input',
   templateUrl: './request-input.component.html',
   styleUrls: ['./request-input.component.css'],
   standalone: true,
-  imports: [AddressInputComponent, DropdownComponent, ButtonComponent, ReactiveFormsModule]
+  imports: [AddressInputComponent, DropdownComponent, ButtonComponent, ReactiveFormsModule, MatButton]
 })
 export class RequestInputComponent implements OnInit {
   protected requestConfig: RequestConfiguration = typeConfigs;

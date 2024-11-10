@@ -1,8 +1,8 @@
 $spacer: 1rem;
-$electric-violet: oklch(53.18% 0.28 296.97);
-$bg-sidebar: #d4aef1;
-$bg-primary: #8E7DBE;
-$bg-surface: #706295;
+$electric-violet: oklch(0.931 0 89.876);
+$bg-sidebar: #eaeaea;
+$bg-primary: #eeeeee;
+$bg-surface: #d9d9d9;
 $success: #99C1B9;
 $danger: #D88C9A;
 $info: #56CBF9;
@@ -233,7 +233,8 @@ app-request-input {
   & form {
     display: flex;
     width: 100%;
-    align-items: center;
+    align-items: start;
+    gap: $spacer;
 
   }
 }
@@ -597,3 +598,26 @@ app-make-request {
   padding: $spacer * .75;
 }
 
+
+.main-layout {
+  width: 100vw;
+  height: 100vh;
+
+  display: grid;
+  grid-template-areas: "sidebar cnt";
+  grid-template-columns: 2fr 8fr;
+  gap: $spacer;
+
+  & app-sidebar {
+    grid-area: sidebar;
+    height: 100%;
+  }
+
+  & .content {
+    grid-area: cnt;
+    background-color: $bg-surface;
+    margin: $spacer;
+    padding: $spacer;
+    border-radius: $spacer;
+  }
+}

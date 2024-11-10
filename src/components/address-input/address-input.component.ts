@@ -4,13 +4,14 @@ import {KeyValuePipe, NgFor} from '@angular/common';
 import {DropdownComponent} from "../core/dropdown/dropdown.component";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 import {RequestSecurity} from "../../app/model/request-security.enum";
+import {MatFormFieldModule} from "@angular/material/form-field";
 
 @Component({
   selector: 'app-address-input',
   templateUrl: './address-input.component.html',
   styleUrls: ['./address-input.component.css'],
   standalone: true,
-  imports: [NgFor, KeyValuePipe, DropdownComponent, ReactiveFormsModule],
+  imports: [NgFor, KeyValuePipe, DropdownComponent, ReactiveFormsModule, MatFormFieldModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
