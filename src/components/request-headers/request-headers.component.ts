@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ParameterTableComponent, RowChangeEvent} from "../core/parameter-table/parameter-table.component";
 import {QueryParameterRow} from "../request-query-parameters/request-query-parameters.component";
 
@@ -12,7 +12,6 @@ import {QueryParameterRow} from "../request-query-parameters/request-query-param
   styleUrl: './request-headers.component.scss'
 })
 export class RequestHeadersComponent {
-  requestHeaders = ELEMENT_DATA;
   requestHeaderLabels: { [key in keyof RequestHeaderRow]: string } = {
     select: 'Select',
     name: 'Name',
@@ -21,6 +20,8 @@ export class RequestHeadersComponent {
     description: 'Description'
   };
 
+  @Input()
+  public headers: RequestHeaderRow[] = [];
 
   @Output()
   public requestHeadersChanged: EventEmitter<RequestHeaderRow[]> = new EventEmitter<RequestHeaderRow[]>();
@@ -32,29 +33,25 @@ export class RequestHeadersComponent {
       return;
     }
     rowData[prop] = value;
-    if (!this.containsBlankRow(this.requestHeaders)) {
-      this.requestHeaders = [...this.requestHeaders, {
+    if (!this.containsBlankRow(this.headers)) {
+      this.headers = [...this.headers, {
         select: true,
         name: '',
-        position: this.requestHeaders.length + 1,
+        position: this.headers.length + 1,
         text_value: '',
         description: ''
       }];
     } else {
-      this.requestHeaders = [...this.requestHeaders];
+      this.headers = [...this.headers];
     }
 
-    this.requestHeadersChanged.emit(this.requestHeaders);
+    this.requestHeadersChanged.emit(this.headers);
   }
 
   public containsBlankRow(dataSource: RequestHeaderRow[]): boolean {
     return dataSource.some(row => row.name === '' && row.text_value === '' && row.description === '');
   }
 }
-
-const ELEMENT_DATA: RequestHeaderRow[] = [
-  {select: true, position: 1, name: '', text_value: '', description: '',},
-];
 
 export interface RequestHeaderRow {
   select: boolean;

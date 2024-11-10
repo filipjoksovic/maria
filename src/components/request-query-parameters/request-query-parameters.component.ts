@@ -1,8 +1,9 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {ParameterTableComponent, RowChangeEvent} from "../core/parameter-table/parameter-table.component";
+import {languages} from "monaco-editor";
 
 @Component({
   selector: 'app-request-query-parameters',
@@ -13,10 +14,12 @@ import {ParameterTableComponent, RowChangeEvent} from "../core/parameter-table/p
 })
 export class RequestQueryParametersComponent {
 
+  @Input()
+  public parameters: QueryParameterRow[] = [];
+
   @Output()
   public queryParametersChanged: EventEmitter<QueryParameterRow[]> = new EventEmitter<QueryParameterRow[]>();
 
-  queryParameters = ELEMENT_DATA;
   queryParameterLabels: { [key in keyof QueryParameterRow]: string } = {
     select: 'Select',
     position: 'Position',
@@ -31,24 +34,26 @@ export class RequestQueryParametersComponent {
       return;
     }
     rowData[prop] = value;
-    if (!this.containsBlankRow(this.queryParameters)) {
-      this.queryParameters = [...this.queryParameters, {
+    if (!this.containsBlankRow(this.parameters)) {
+      this.parameters = [...this.parameters, {
         select: true,
         name: '',
-        position: this.queryParameters.length + 1,
+        position: this.parameters.length + 1,
         text_value: '',
         description: ''
       }];
     } else {
-      this.queryParameters = [...this.queryParameters];
+      this.parameters = [...this.parameters];
     }
 
-    this.queryParametersChanged.emit(this.queryParameters);
+    this.queryParametersChanged.emit(this.parameters);
   }
 
   public containsBlankRow(dataSource: QueryParameterRow[]): boolean {
     return dataSource.some(row => row.name === '' && row.text_value === '' && row.description === '');
   }
+
+  protected readonly languages = languages;
 }
 
 export interface QueryParameterRow {

@@ -33,6 +33,7 @@ export class MakeRequestComponent implements OnInit, OnChanges {
   private readonly requestService = inject(RequestService);
 
   public request!: Signal<RequestModel | undefined>;
+  defaultParameters: QueryParameterRow[] = [] as QueryParameterRow[];
 
 
   constructor() {

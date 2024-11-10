@@ -20,29 +20,29 @@ export type PositionableObject = { position: number } & object;
   templateUrl: './parameter-table.component.html',
   styleUrl: './parameter-table.component.scss'
 })
-export class ParameterTableComponent<T extends PositionableObject> implements OnInit {
+export class ParameterTableComponent<PosGen extends PositionableObject> implements OnInit {
 
-  selection = new SelectionModel<T>(true, []);
-
-  @Input({required: true})
-  public dataSource!: T[];
+  selection = new SelectionModel<PosGen>(true, []);
 
   @Input({required: true})
-  public dataSourceLabels!: { [key in keyof T]: string };
+  public dataSource!: PosGen[];
+
+  @Input({required: true})
+  public dataSourceLabels!: { [key in keyof PosGen]: string };
 
   public dataSourceKeys!: string[];
 
   @Output()
-  public rowChanged: EventEmitter<RowChangeEvent<T>> = new EventEmitter<RowChangeEvent<T>>();
+  public rowChanged: EventEmitter<RowChangeEvent<PosGen>> = new EventEmitter<RowChangeEvent<PosGen>>();
 
-  public iterableKeys: StringKeys<T>[] = [];
+  public iterableKeys: StringKeys<PosGen>[] = [];
 
   ngOnInit() {
     this.dataSourceKeys = Object.keys(this.dataSource[0])
-    this.iterableKeys = Object.keys(this.dataSource[0]).filter(key => key !== 'position' && key !== 'select') as StringKeys<T>[];
+    this.iterableKeys = Object.keys(this.dataSource[0]).filter(key => key !== 'position' && key !== 'select') as StringKeys<PosGen>[];
   }
 
-  public handleOnChange(event: Event, rowData: T, prop: StringKeys<T>) {
+  public handleOnChange(event: Event, rowData: PosGen, prop: StringKeys<PosGen>) {
     this.rowChanged.emit({event, rowData, prop});
   }
 
@@ -64,7 +64,7 @@ export class ParameterTableComponent<T extends PositionableObject> implements On
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: T): string {
+  checkboxLabel(row?: PosGen): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }

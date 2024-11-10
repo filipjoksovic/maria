@@ -19,6 +19,22 @@ export const mapToQueryParameters = (params: QueryParameterRow[]): QueryParamete
   })
 }
 
+export const mapToQueryParameter = (params: QueryParameterRow):
+  QueryParametersModel => {
+  return {
+    name: params.name,
+    value: params.text_value
+  }
+}
+
+export const mapToHeaderParameter = (params: RequestHeaderRow):
+  HeadersModel => {
+  return {
+    name: params.name,
+    value: params.text_value
+  }
+}
+
 export const isValidQueryParameter = (param: QueryParametersModel): boolean => {
   return param.name !== '' && param.value !== '';
 }

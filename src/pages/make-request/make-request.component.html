@@ -8,13 +8,14 @@
     <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
       <mat-tab label="Parameters">
         <app-request-query-parameters
+          [parameters]="request()?.params ?? defaultParameters"
           (queryParametersChanged)="handleQueryParametersChange($event)"></app-request-query-parameters>
       </mat-tab>
       <mat-tab label="Authorization">
         authorization
       </mat-tab>
       <mat-tab label="Headers">
-        <app-request-headers (requestHeadersChanged)="handleRequestHeadersChange($event)"></app-request-headers>
+        <app-request-headers [headers]="request()?.headers ?? []" (requestHeadersChanged)="handleRequestHeadersChange($event)"></app-request-headers>
       </mat-tab>
 
       <mat-tab label="Body">

@@ -7,7 +7,13 @@ import {DataService} from './data.service';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {RequestResultService} from "./request-result.service";
 import {QueryParameterRow} from "../../components/request-query-parameters/request-query-parameters.component";
-import {isValidQueryParameter, mapToHeaders, mapToQueryParameters, trimParameters} from "../utils/params.utils";
+import {
+  isValidQueryParameter, mapToHeaderParameter,
+  mapToHeaders,
+  mapToQueryParameter,
+  mapToQueryParameters,
+  trimParameters
+} from "../utils/params.utils";
 import {RequestHeaderRow} from "../../components/request-headers/request-headers.component";
 import {RequestSecurity} from "../model/request-security.enum";
 import {securityConfigs} from '../model/request-security.config';
@@ -94,8 +100,22 @@ export class RequestService {
       name: "New Request",
       url: '',
       method: RequestTypeEnum.GET,
-      params: [],
-      headers: []
+      params: [{
+        position: 1,
+        name: '',
+        text_value: '',
+        description: '',
+        select: true
+      }],
+      headers: [
+        {
+          position: 1,
+          name: '',
+          text_value: '',
+          select: true,
+          description: ''
+        }
+      ]
     }
     this._requestAdded$.next(request);
 
@@ -209,7 +229,7 @@ export class RequestService {
 
   private createHttpParams(requestModel: RequestModel): HttpParams {
     let httpParams = new HttpParams();
-    requestModel.params!.map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
+    requestModel.params!.map((params) => mapToQueryParameter(params)).map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
       httpParams = httpParams.append(param.name, param.value);
     });
 
@@ -219,7 +239,7 @@ export class RequestService {
 
   private createHeaders(requestModel: RequestModel): HttpHeaders {
     let headers = new HttpHeaders();
-    requestModel.headers!.map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
+    requestModel.headers!.map((params) => mapToHeaderParameter(params)).map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
       headers = headers.set(param.name, param.value);
     });
     return headers;
@@ -240,7 +260,7 @@ export class RequestService {
   changeQueryParameters(requestModel: RequestModel, $event: QueryParameterRow[]) {
     this._requestUpdated$.next({
       id: requestModel.id,
-      params: mapToQueryParameters($event)
+      params: $event
     });
   }
 
@@ -248,7 +268,7 @@ export class RequestService {
   changeHeaders(requestModel: RequestModel, $event: RequestHeaderRow[]) {
     this._requestUpdated$.next({
       id: requestModel.id,
-      headers: mapToHeaders($event)
+      headers: $event
     });
   }
 
