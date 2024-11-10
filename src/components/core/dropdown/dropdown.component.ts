@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DropdownDataConfiguration} from '../../../app/model/core/dropdown-data.model';
 import {KeyValuePipe, NgClass, NgFor} from '@angular/common';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
@@ -30,8 +30,12 @@ export class DropdownComponent<T extends number | symbol | string> implements Co
   @Input()
   public activeValue: T = "" as unknown as T;
 
+  @Output()
+  public valueChanged: EventEmitter<T> = new EventEmitter();
+
   public handleSelectionChange($event: MatSelectChange) {
     console.log($event);
+    this.valueChanged.emit($event.value);
     this.onChange($event.value);
   }
 
@@ -45,8 +49,10 @@ export class DropdownComponent<T extends number | symbol | string> implements Co
   disabled = false;
 
   writeValue(obj: any): void {
+    console.log("writeValue", obj);
     this.markAsTouched();
     this.activeValue = obj;
+    this.valueChanged.emit(this.activeValue);
     this.onChange(this.activeValue);
   }
 

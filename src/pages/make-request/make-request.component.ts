@@ -18,6 +18,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {RequestHeaderRow, RequestHeadersComponent} from "../../components/request-headers/request-headers.component";
 import {RequestBodyComponent} from "../../components/request-body/request-body.component";
 import {CodeEditorComponent} from "@ngstack/code-editor";
+import {RequestSecurity} from "../../app/model/request-security.enum";
 
 @Component({
   selector: 'app-make-request',
@@ -77,15 +78,12 @@ export class MakeRequestComponent implements OnInit, OnChanges {
     if (this.request() === undefined) {
       return;
     }
-    console.log('hree');
-
     this.requestService.updateRequest(this.request()!, {
       url: $event
     })
   }
 
   handleSendRequest() {
-    console.log('hree');
     this.requestService.executeRequest(this.request()!);
   }
 
@@ -108,5 +106,9 @@ export class MakeRequestComponent implements OnInit, OnChanges {
       console.log("Invalid JSON");
       return;
     }
+  }
+
+  handleTypeChanged($event: RequestSecurity) {
+    this.requestService.changeType(this.request()!, $event);
   }
 }

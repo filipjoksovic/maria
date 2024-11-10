@@ -7,6 +7,8 @@ import {RequestModel} from "../../app/model/request.model";
 import {RequestTypeEnum} from "../../app/model/request-type.enum";
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {filter, map, pairwise, startWith, tap} from "rxjs";
+import {securityConfigs} from "../../app/model/request-security.config";
+import {RequestSecurity} from "../../app/model/request-security.enum";
 
 @Component({
   selector: 'app-request-input',
@@ -30,12 +32,21 @@ export class RequestInputComponent implements OnInit {
   @Output()
   public urlChanged: EventEmitter<string> = new EventEmitter();
 
-  public requestForm: FormGroup;
+  @Output()
+  public typeChanged: EventEmitter<RequestSecurity> = new EventEmitter();
+
+  public requestForm!: FormGroup;
 
   constructor(private readonly formBuilder: FormBuilder) {
-    this.requestForm = formBuilder.group({
-      method: new FormControl(""),
-      url: new FormControl("", Validators.required),
+
+  }
+
+  ngOnInit() {
+    console.log(this.request);
+    this.requestForm = this.formBuilder.group({
+      method: new FormControl(this.request?.method),
+      url: new FormControl(this.request?.url, Validators.required),
+      type: new FormControl(this.request?.type),
     })
 
     this.requestForm.valueChanges.pipe(
@@ -66,12 +77,12 @@ export class RequestInputComponent implements OnInit {
           if (key === "method") {
             this.methodChanged.emit(value as RequestTypeEnum);
           }
+          if (key === "type") {
+            this.typeChanged.emit(value as RequestSecurity);
+          }
         })
       }
     );
-  }
-
-  ngOnInit() {
   }
 
   public dispatchSendRequest(): void {
@@ -79,7 +90,5 @@ export class RequestInputComponent implements OnInit {
     this.sendRequest.emit();
   }
 
-  methodSelected($event: number | symbol | string) {
-    this.methodChanged.emit($event as RequestTypeEnum);
-  }
+  protected readonly securityConfigs = securityConfigs;
 }

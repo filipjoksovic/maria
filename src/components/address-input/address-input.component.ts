@@ -1,15 +1,9 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {RequestSecurityConfiguration, securityConfigs} from '../../app/model/request-security.config';
 import {KeyValuePipe, NgFor} from '@angular/common';
 import {DropdownComponent} from "../core/dropdown/dropdown.component";
-import {
-  ControlValueAccessor,
-  FormBuilder,
-  FormControl,
-  FormGroup, NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
+import {RequestSecurity} from "../../app/model/request-security.enum";
 
 @Component({
   selector: 'app-address-input',
@@ -31,12 +25,13 @@ export class AddressInputComponent implements OnInit, ControlValueAccessor {
 
   public value: string = "";
 
+  public activeType: RequestSecurity = RequestSecurity.HTTP;
+
   @Output()
   urlChanged: EventEmitter<string> = new EventEmitter();
 
   ngOnInit() {
     console.log("Request value", this.value);
-
   }
 
   handleUrlChanged($event: Event) {
@@ -70,14 +65,19 @@ export class AddressInputComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(value: string): void {
-    this.markAsTouched();
     this.value = value;
-    this.onChange(value);
   }
 
   markAsTouched(): void {
     this.onTouched();
   }
 
+  handleValueChanged(event: RequestSecurity) {
+    this.activeType = event;
+    console.log(event);
+    const requestPrefix = this.securityConfigs[event].text;
 
+    this.value = this.securityConfigs[event].text + this.value;
+    this.writeValue(this.value);
+  }
 }

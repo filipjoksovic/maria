@@ -1,33 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {
-  BehaviorSubject,
-  filter,
-  find,
-  map,
-  merge,
-  Observable,
-  of,
-  Subject,
-  Subscriber,
-  switchMap,
-  tap,
-  zip
-} from 'rxjs';
-import {QueryParametersModel, RequestModel} from '../model/request.model';
+import {BehaviorSubject, filter, map, Observable, of, Subject, switchMap, tap, zip} from 'rxjs';
+import {RequestModel} from '../model/request.model';
 import {RequestTypeEnum} from '../model/request-type.enum';
 import {DataService} from './data.service';
-import {HttpClient, HttpHeaders, HttpParams, HttpParamsOptions} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {RequestResultService} from "./request-result.service";
 import {QueryParameterRow} from "../../components/request-query-parameters/request-query-parameters.component";
-import {
-  isValidParameter,
-  isValidQueryParameter,
-  mapToHeaders,
-  mapToQueryParameters,
-  trimParameters
-} from "../utils/params.utils";
+import {isValidQueryParameter, mapToHeaders, mapToQueryParameters, trimParameters} from "../utils/params.utils";
 import {RequestHeaderRow} from "../../components/request-headers/request-headers.component";
+import {RequestSecurity} from "../model/request-security.enum";
+import {securityConfigs} from '../model/request-security.config';
 
 @Injectable({
   providedIn: 'root'
@@ -154,22 +137,32 @@ export class RequestService {
 
   executeRequest(requestModel: RequestModel) {
     console.log("Received request to execute", requestModel)
-    switch (requestModel.method) {
+    const request: RequestModel = {...requestModel};
+    Object.keys(securityConfigs).forEach((key) => {
+        if (request.url.startsWith(securityConfigs[key as RequestSecurity].text)) {
+          request.url = request.url.replace(securityConfigs[key as RequestSecurity].text, "");
+        }
+      }
+    );
+    request.url = securityConfigs[request.type ?? RequestSecurity.HTTPS].text + request.url;
+    request.url = request.url.trim();
+
+    switch (request.method) {
       case RequestTypeEnum.GET:
         console.log("Executing GET request");
-        this.handleGet(requestModel);
+        this.handleGet(request);
         break;
       case RequestTypeEnum.POST:
         console.log("Executing POST request");
-        this.handlePost(requestModel);
+        this.handlePost(request);
         break;
       case RequestTypeEnum.PUT:
         console.log("Executing PUT request");
-        this.handlePut(requestModel);
+        this.handlePut(request);
         break;
       case RequestTypeEnum.DELETE:
         console.log("Executing DELETE request");
-        this.handleDelete(requestModel);
+        this.handleDelete(request);
         break;
       default:
         console.log("Unknown request type");
@@ -263,6 +256,13 @@ export class RequestService {
     this._requestUpdated$.next({
       id: requestModel.id,
       body: JSON.stringify(JSON.parse(body))
+    })
+  }
+
+  changeType(requestModel: RequestModel, $event: RequestSecurity) {
+    this._requestUpdated$.next({
+      id: requestModel.id,
+      type: $event
     })
   }
 }

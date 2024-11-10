@@ -1,32 +1,34 @@
-<div class="make-request-container">
-  <div class="make-request-container__topbar">
-    <app-request-name [request]="request()" (nameBlurred)="handleNameChange($event)"></app-request-name>
-    <app-request-input [request]="request()" (methodChanged)="handleMethodChange($event)"
-                       (urlChanged)="handleUrlChange($event)" (sendRequest)="handleSendRequest()"></app-request-input>
+@if (request()) {
+  <div class="make-request-container">
+    <div class="make-request-container__topbar">
+      <app-request-name [request]="request()" (nameBlurred)="handleNameChange($event)"></app-request-name>
+      <app-request-input [request]="request()" (methodChanged)="handleMethodChange($event)"
+                         (urlChanged)="handleUrlChange($event)" (sendRequest)="handleSendRequest()" (typeChanged)="handleTypeChanged($event)"></app-request-input>
+    </div>
+    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+      <mat-tab label="Parameters">
+        <app-request-query-parameters
+          (queryParametersChanged)="handleQueryParametersChange($event)"></app-request-query-parameters>
+      </mat-tab>
+      <mat-tab label="Authorization">
+        authorization
+      </mat-tab>
+      <mat-tab label="Headers">
+        <app-request-headers (requestHeadersChanged)="handleRequestHeadersChange($event)"></app-request-headers>
+      </mat-tab>
+
+      <mat-tab label="Body">
+        <ng-template matTabContent>
+          <app-request-body (requestBodyChanged)="handleRequestBodyChange($event)"></app-request-body>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="Pre-request script"> Content 3</mat-tab>
+      <mat-tab label="Tests"> Content 3</mat-tab>
+      <mat-tab label="Settings"> Content 3</mat-tab>
+      <mat-tab label="Headers"> Content 3</mat-tab>
+
+    </mat-tab-group>
+
+    <app-request-result class="w-100 make-request-container__results"></app-request-result>
   </div>
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-    <mat-tab label="Parameters">
-      <app-request-query-parameters
-        (queryParametersChanged)="handleQueryParametersChange($event)"></app-request-query-parameters>
-    </mat-tab>
-    <mat-tab label="Authorization">
-      authorization
-    </mat-tab>
-    <mat-tab label="Headers">
-      <app-request-headers (requestHeadersChanged)="handleRequestHeadersChange($event)"></app-request-headers>
-    </mat-tab>
-
-    <mat-tab label="Body">
-      <ng-template matTabContent>
-        <app-request-body (requestBodyChanged)="handleRequestBodyChange($event)"></app-request-body>
-      </ng-template>
-    </mat-tab>
-    <mat-tab label="Pre-request script"> Content 3</mat-tab>
-    <mat-tab label="Tests"> Content 3</mat-tab>
-    <mat-tab label="Settings"> Content 3</mat-tab>
-    <mat-tab label="Headers"> Content 3</mat-tab>
-
-  </mat-tab-group>
-
-  <app-request-result class="w-100 make-request-container__results"></app-request-result>
-</div>
+}
