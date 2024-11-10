@@ -16,12 +16,14 @@ import {
 } from "../../components/request-query-parameters/request-query-parameters.component";
 import {MatTabsModule} from "@angular/material/tabs";
 import {RequestHeaderRow, RequestHeadersComponent} from "../../components/request-headers/request-headers.component";
+import {RequestBodyComponent} from "../../components/request-body/request-body.component";
+import {CodeEditorComponent} from "@ngstack/code-editor";
 
 @Component({
   selector: 'app-make-request',
   templateUrl: './make-request.component.html',
   styleUrls: ['./make-request.component.css'],
-  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule, RequestHeadersComponent],
+  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule, RequestHeadersComponent, RequestBodyComponent, CodeEditorComponent],
   standalone: true
 })
 export class MakeRequestComponent implements OnInit, OnChanges {
@@ -96,4 +98,15 @@ export class MakeRequestComponent implements OnInit, OnChanges {
 
   }
 
+  handleRequestBodyChange($event: string) {
+    const body = $event;
+    try {
+      JSON.parse(body);
+      console.log('valid JSON');
+      this.requestService.handleBodyChange(this.request()!, body);
+    } catch (e) {
+      console.log("Invalid JSON");
+      return;
+    }
+  }
 }

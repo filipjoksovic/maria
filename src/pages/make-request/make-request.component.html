@@ -16,7 +16,11 @@
       <app-request-headers (requestHeadersChanged)="handleRequestHeadersChange($event)"></app-request-headers>
     </mat-tab>
 
-    <mat-tab label="Body"> Content 3</mat-tab>
+    <mat-tab label="Body">
+      <ng-template matTabContent>
+        <app-request-body (requestBodyChanged)="handleRequestBodyChange($event)"></app-request-body>
+      </ng-template>
+    </mat-tab>
     <mat-tab label="Pre-request script"> Content 3</mat-tab>
     <mat-tab label="Tests"> Content 3</mat-tab>
     <mat-tab label="Settings"> Content 3</mat-tab>

@@ -216,7 +216,7 @@ export class RequestService {
 
   private createHttpParams(requestModel: RequestModel): HttpParams {
     let httpParams = new HttpParams();
-    requestModel.params.map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
+    requestModel.params!.map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
       httpParams = httpParams.append(param.name, param.value);
     });
 
@@ -226,7 +226,7 @@ export class RequestService {
 
   private createHeaders(requestModel: RequestModel): HttpHeaders {
     let headers = new HttpHeaders();
-    requestModel.headers.map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
+    requestModel.headers!.map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
       headers = headers.set(param.name, param.value);
     });
     return headers;
@@ -236,10 +236,9 @@ export class RequestService {
   private handlePost(requestModel: RequestModel) {
     const options = {
       params: this.createHttpParams(requestModel),
-      headers: this.createHeaders(requestModel)
+      headers: this.createHeaders(requestModel),
     }
-    console.log("Options", options);
-    this.http.post(requestModel.url, options).subscribe((response: any) => {
+    this.http.post(requestModel.url, requestModel.body, options).subscribe((response: any) => {
       console.log(response);
       this.requestResultService.onResultReceived(requestModel, response);
     });
@@ -258,6 +257,13 @@ export class RequestService {
       id: requestModel.id,
       headers: mapToHeaders($event)
     });
+  }
+
+  handleBodyChange(requestModel: RequestModel, body: string) {
+    this._requestUpdated$.next({
+      id: requestModel.id,
+      body: JSON.stringify(JSON.parse(body))
+    })
   }
 }
 
