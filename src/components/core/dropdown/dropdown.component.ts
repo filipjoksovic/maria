@@ -1,58 +1,73 @@
-import {Component, EventEmitter, Input, OnInit, Output, signal, WritableSignal} from '@angular/core';
-import {DropdownData, DropdownDataConfiguration} from '../../../app/model/core/dropdown-data.model';
+import {Component, Input} from '@angular/core';
+import {DropdownDataConfiguration} from '../../../app/model/core/dropdown-data.model';
 import {KeyValuePipe, NgClass, NgFor} from '@angular/common';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectChange, MatSelectModule} from "@angular/material/select";
 
 @Component({
   selector: 'app-dropdown',
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.css'],
   standalone: true,
-  imports: [NgFor, KeyValuePipe, NgClass]
+  imports: [NgFor, KeyValuePipe, NgClass, ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: DropdownComponent
+    }
+  ]
 })
-export class DropdownComponent<T extends number | symbol | string> implements OnInit {
+export class DropdownComponent<T extends number | symbol | string> implements ControlValueAccessor {
 
   @Input({required: true})
   data!: DropdownDataConfiguration<T>;
 
-  @Output()
-  closed: EventEmitter<T> = new EventEmitter<T>();
+  @Input({required: true})
+  label: string = "Select";
 
-  @Output()
-  open: EventEmitter<T> = new EventEmitter<T>();
+  @Input()
+  public activeValue: T = "" as unknown as T;
 
-  isOpen: WritableSignal<boolean> = signal(false);
-  activeItem!: WritableSignal<T>
-
-  constructor() {
+  public handleSelectionChange($event: MatSelectChange) {
+    console.log($event);
+    this.onChange($event.value);
   }
 
-  ngOnInit() {
-    this.activeItem = signal(Object.keys(this.data)[0] as T);
+  onChange = (value: T) => {
+  };
+  onTouched = () => {
+  };
 
+  touched = false;
+
+  disabled = false;
+
+  writeValue(obj: any): void {
+    this.markAsTouched();
+    this.activeValue = obj;
+    this.onChange(this.activeValue);
   }
 
-  public toggleDropdown() {
-    this.isOpen.update((value: boolean) => {
-      return !value;
-    });
-
-    if (this.isOpen()) {
-      this.open.emit(this.activeItem());
-    } else {
-      this.closed.emit(this.activeItem());
-    }
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
   }
 
-  //TODO type properly
-  public selectActiveElement(item: string) {
-    console.log(item);
-    this.activeItem.update(() => {
-      return item as T;
-    })
-    this.isOpen.update((isOpen: boolean) => {
-      return !isOpen;
-    })
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  setTouchedState(isTouched: boolean): void {
+    this.touched = isTouched;
+  }
+
+  markAsTouched(): void {
+    this.onTouched();
   }
 
 }

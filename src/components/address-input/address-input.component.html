@@ -1,8 +1,6 @@
 <div class="address-input__prefix">
-  <app-dropdown [data]="securityConfigs"></app-dropdown>
+  <app-dropdown label="Type" [data]="securityConfigs"></app-dropdown>
 </div>
 <div class="address-input">
-  <form [formGroup]="form">
-    <input formControlName="address" (change)="handleUrlChanged($event)">
-  </form>
+  <input (change)="handleUrlChanged($event)">
 </div>

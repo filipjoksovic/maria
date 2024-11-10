@@ -1,9 +1,8 @@
-<div class="dropdown" tabindex="1" (blur)="toggleDropdown()" (click)="toggleDropdown()">
-  <div class="dropdown__active">{{activeItem()}}</div>
-
-  <div class="dropdown__container" [ngClass]="isOpen() ? 'active' : ''">
+<mat-form-field>
+  <mat-label>{{ label }}</mat-label>
+  <mat-select required [value]="activeValue" (selectionChange)="handleSelectionChange($event)">
     <ng-container *ngFor="let item of data | keyvalue">
-      <p class="dropdown__item" (click)="selectActiveElement(item.key)">{{item.key}}</p>
+      <mat-option [value]="item.key">{{ item.key }}</mat-option>
     </ng-container>
-  </div>
-</div>
+  </mat-select>
+</mat-form-field>

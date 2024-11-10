@@ -1,3 +1,5 @@
-<app-dropdown [data]="requestConfig" (closed)="methodSelected($event)"></app-dropdown>
-<app-address-input (urlChanged)="urlChanged.emit($event)"></app-address-input>
-<app-button label="Send" (clicked)="dispatchSendRequest()"></app-button>
+<form [formGroup]="requestForm">
+  <app-dropdown formControlName="method" label='Method' [data]="requestConfig"></app-dropdown>
+  <app-address-input formControlName="url"></app-address-input>
+  <app-button label="Send" (clicked)="dispatchSendRequest()"></app-button>
+</form>
