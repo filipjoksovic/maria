@@ -1,7 +1,7 @@
 <p>Results</p>
 <div class="results-container">
   @if (requestResult() !== "") {
-    <textarea disabled [value]="requestResult()"></textarea>
+    <ngs-code-editor [readOnly]="true" [codeModel]="model" [options]="options"></ngs-code-editor>
   } @else {
     <p>No result. Try making a request first.</p>
   }
