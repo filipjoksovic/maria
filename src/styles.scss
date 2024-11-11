@@ -545,6 +545,11 @@ app-request-result {
       height: 100%;
       padding: $spacer;
     }
+
+    &__status {
+      display: flex;
+      gap: $spacer;
+    }
   }
 }
 

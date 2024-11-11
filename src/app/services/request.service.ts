@@ -4,7 +4,15 @@ import {BehaviorSubject, filter, map, Observable, of, Subject, switchMap, tap, z
 import {RequestModel} from '../model/request.model';
 import {RequestTypeEnum} from '../model/request-type.enum';
 import {DataService} from './data.service';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {
+  HttpClient, HttpEvent,
+  HttpEventType,
+  HttpHeaders,
+  HttpParams,
+  HttpRequest,
+  HttpResponse,
+  HttpResponseBase
+} from "@angular/common/http";
 import {RequestResultService} from "./request-result.service";
 import {QueryParameterRow} from "../../components/request-query-parameters/request-query-parameters.component";
 import {
@@ -17,6 +25,7 @@ import {
 import {RequestHeaderRow} from "../../components/request-headers/request-headers.component";
 import {RequestSecurity} from "../model/request-security.enum";
 import {securityConfigs} from '../model/request-security.config';
+import {RequestEngineService} from "./core/request-engine.service";
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +46,11 @@ export class RequestService {
 
   private readonly _requestUpdated$: Subject<{ id: string } & Partial<RequestModel>> = new Subject();
 
-  constructor(private readonly router: Router, private readonly dataService: DataService, private readonly http: HttpClient, private readonly requestResultService: RequestResultService) {
+  constructor(private readonly router: Router,
+              private readonly dataService: DataService,
+              private readonly http: HttpClient,
+              private readonly requestResultService: RequestResultService,
+              private readonly requestEngineService: RequestEngineService) {
     this._requests$ = new BehaviorSubject<RequestModel[]>(this.fetchRequestsFromDataStore());
     this.requests$ = this._requests$.asObservable();
 
@@ -84,6 +97,11 @@ export class RequestService {
         this.dataService.store("requests", newData);
       })
     ).subscribe();
+
+    this.requestEngineService.requestExecuted$.subscribe((result) => {
+      console.log("Request executed", result);
+      this.requestResultService.onResultsReceived(result);
+    });
 
   }
 
@@ -156,39 +174,7 @@ export class RequestService {
   }
 
   executeRequest(requestModel: RequestModel) {
-    console.log("Received request to execute", requestModel)
-    const request: RequestModel = {...requestModel};
-    Object.keys(securityConfigs).forEach((key) => {
-        if (request.url.startsWith(securityConfigs[key as RequestSecurity].text)) {
-          request.url = request.url.replace(securityConfigs[key as RequestSecurity].text, "");
-        }
-      }
-    );
-    request.url = securityConfigs[request.type ?? RequestSecurity.HTTPS].text + request.url;
-    request.url = request.url.trim();
-
-    switch (request.method) {
-      case RequestTypeEnum.GET:
-        console.log("Executing GET request");
-        this.handleGet(request);
-        break;
-      case RequestTypeEnum.POST:
-        console.log("Executing POST request");
-        this.handlePost(request);
-        break;
-      case RequestTypeEnum.PUT:
-        console.log("Executing PUT request");
-        this.handlePut(request);
-        break;
-      case RequestTypeEnum.DELETE:
-        console.log("Executing DELETE request");
-        this.handleDelete(request);
-        break;
-      default:
-        console.log("Unknown request type");
-        break;
-
-    }
+    this.requestEngineService.executeHttpRequest(requestModel);
   }
 
   private handleDelete(requestModel: RequestModel) {
@@ -198,8 +184,11 @@ export class RequestService {
     }
     console.log("Options", options);
     this.http.delete(requestModel.url, options).subscribe((response: any) => {
-      console.log(response);
-      this.requestResultService.onResultReceived(requestModel, response);
+      switch (response.type) {
+        case HttpEventType.Response:
+          this.requestResultService.onResultReceived(requestModel, response as HttpResponse<any>);
+
+      }
     });
   }
 
@@ -210,8 +199,11 @@ export class RequestService {
     }
     console.log("Options", options);
     this.http.put(requestModel.url, options).subscribe((response: any) => {
-      console.log(response);
-      this.requestResultService.onResultReceived(requestModel, response);
+      switch (response.type) {
+        case HttpEventType.Response:
+          this.requestResultService.onResultReceived(requestModel, response as HttpResponse<any>);
+
+      }
     });
   }
 
@@ -220,10 +212,15 @@ export class RequestService {
       params: this.createHttpParams(requestModel),
       headers: this.createHeaders(requestModel)
     }
+
+    const request = new HttpRequest('GET', requestModel.url, options);
     console.log("Options", options);
-    this.http.get(requestModel.url, options).subscribe((response: any) => {
+    this.http.request(request).subscribe((response: HttpEvent<any>) => {
       console.log(response);
-      this.requestResultService.onResultReceived(requestModel, response);
+      switch (response.type) {
+        case HttpEventType.Response:
+          this.requestResultService.onResultReceived(requestModel, response as HttpResponse<any>);
+      }
     });
   }
 
@@ -252,8 +249,11 @@ export class RequestService {
       headers: this.createHeaders(requestModel),
     }
     this.http.post(requestModel.url, requestModel.body, options).subscribe((response: any) => {
-      console.log(response);
-      this.requestResultService.onResultReceived(requestModel, response);
+      switch (response.type) {
+        case HttpEventType.Response:
+          this.requestResultService.onResultReceived(requestModel, response as HttpResponse<any>);
+
+      }
     });
   }
 

@@ -5,6 +5,7 @@ import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
 import {MatInput, MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {CodeEditorComponent, CodeModel} from "@ngstack/code-editor";
+import {RequestResultModel} from "../../app/model/request/request-result.model";
 
 @Component({
   selector: 'app-request-result',
@@ -35,11 +36,11 @@ export class RequestResultComponent {
 
   private readonly requestResultService = inject(RequestResultService);
 
-  public requestResult: Signal<string | undefined> = toSignal(this.requestResultService.requestResult$);
+  public requestResult: Signal<RequestResultModel | undefined> = toSignal(this.requestResultService.requestResult$);
 
   constructor() {
     effect(() => {
-      this.model.value = this.requestResult() ?? "{}";
+      this.model.value = this.requestResult()?.responseContent ?? "{}";
     });
   }
 }
