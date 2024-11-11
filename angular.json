@@ -47,6 +47,7 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
+                "@angular/material/prebuilt-themes/azure-blue.css",
                 "src/styles",
                 "src/cssm3-theme",
                 "node_modules/@angular/material",
