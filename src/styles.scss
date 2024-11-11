@@ -1,8 +1,12 @@
+@use '@angular/material' as mat;
+
+@import "cssm3-theme";
+
 $spacer: 1rem;
 $electric-violet: oklch(0.931 0 89.876);
-$bg-sidebar: #eaeaea;
-$bg-primary: #eeeeee;
-$bg-surface: #d9d9d9;
+$bg-sidebar: mat.get-theme-color($light-theme, primary);
+$bg-primary: mat.get-theme-color($light-theme, primary, 90);
+$bg-surface: mat.get-theme-color($light-theme, primary, 80);
 $success: #99C1B9;
 $danger: #D88C9A;
 $info: #56CBF9;
@@ -54,6 +58,10 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  background-color: $bg-primary;
+}
+
 h1 {
   font-size: 3.125rem;
   color: var(--gray-900);
@@ -64,11 +72,6 @@ h1 {
   font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
   Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
   "Segoe UI Symbol";
-}
-
-p {
-  margin: 0;
-  color: var(--gray-700);
 }
 
 main {
@@ -621,3 +624,4 @@ app-make-request {
     border-radius: $spacer;
   }
 }
+
