@@ -1,4 +1,4 @@
-import {Component, effect, inject, model, Signal} from '@angular/core';
+import {Component, effect, inject, model, Signal, TemplateRef, ViewChild} from '@angular/core';
 import {RequestResultService} from "../../app/services/request-result.service";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
@@ -7,6 +7,7 @@ import {FormsModule} from "@angular/forms";
 import {CodeEditorComponent, CodeModel} from "@ngstack/code-editor";
 import {RequestResultModel} from "../../app/model/request/request-result.model";
 import {DatePipe} from "@angular/common";
+import {CdkDrag, CdkDragHandle, CdkDragMove} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-request-result',
@@ -16,7 +17,9 @@ import {DatePipe} from "@angular/common";
     MatInputModule,
     MatFormFieldModule,
     CodeEditorComponent,
-    DatePipe
+    DatePipe,
+    CdkDrag,
+    CdkDragHandle
   ],
   templateUrl: './request-result.component.html',
   styleUrl: './request-result.component.scss'
@@ -40,9 +43,23 @@ export class RequestResultComponent {
 
   public requestResult: Signal<RequestResultModel | undefined> = toSignal(this.requestResultService.requestResult$);
 
+  @ViewChild("resultsContainer")
+  public resultEditor: any;
+
   constructor() {
     effect(() => {
       this.model.value = this.requestResult()?.responseContent ?? "{}";
     });
+  }
+
+  setHeight($event: CdkDragMove<any>) {
+    console.log($event);
+    const element = this.resultEditor.nativeElement as HTMLElement;
+    const parent = element.parentElement as HTMLElement;
+    const parentY = parent.getBoundingClientRect().top;
+    const parentHeight = parent.getBoundingClientRect().height;
+    const y = $event.pointerPosition.y;
+    const height = parentY + parentHeight - y - 16;
+    element.style.height = height + "px";
   }
 }

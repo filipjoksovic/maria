@@ -1,42 +1,45 @@
 @if (requestState()) {
   @if (requestState()?.state === DataState.LOADED) {
     <div class="make-request-container">
-      <div class="make-request-container__topbar">
-        <app-request-name [request]="requestState()?.data" (nameBlurred)="handleNameChange($event)"></app-request-name>
-        <app-request-input [request]="requestState()?.data" (methodChanged)="handleMethodChange($event)"
-                           (urlChanged)="handleUrlChange($event)" (sendRequest)="handleSendRequest()"
-                           (typeChanged)="handleTypeChanged($event)"></app-request-input>
+      <div class="make-request-container__setup">
+        <div class="make-request-container__topbar">
+          <app-request-name [request]="requestState()?.data"
+                            (nameBlurred)="handleNameChange($event)"></app-request-name>
+          <app-request-input [request]="requestState()?.data" (methodChanged)="handleMethodChange($event)"
+                             (urlChanged)="handleUrlChange($event)" (sendRequest)="handleSendRequest()"
+                             (typeChanged)="handleTypeChanged($event)"></app-request-input>
 
+        </div>
+        <div [class]="requestState()?.data?.state !== RequestExecutionStateEnum.LOADING ? 'opacity-0' : 'opacity-1'">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </div>
+        <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
+          <mat-tab label="Parameters">
+            <app-request-query-parameters
+              [parameters]="requestState()?.data?.params ?? defaultParameters"
+              (queryParametersChanged)="handleQueryParametersChange($event)"></app-request-query-parameters>
+          </mat-tab>
+          <mat-tab label="Authorization">
+            authorization
+          </mat-tab>
+          <mat-tab label="Headers">
+            <app-request-headers [headers]="requestState()?.data?.headers ?? []"
+                                 (requestHeadersChanged)="handleRequestHeadersChange($event)"></app-request-headers>
+          </mat-tab>
+
+          <mat-tab label="Body">
+            <ng-template matTabContent>
+              <app-request-body [body]="requestState()?.data?.body ?? '{}'"
+                                (requestBodyChanged)="handleRequestBodyChange($event)"></app-request-body>
+            </ng-template>
+          </mat-tab>
+          <mat-tab label="Pre-request script"> Content 3</mat-tab>
+          <mat-tab label="Tests"> Content 3</mat-tab>
+          <mat-tab label="Settings"> Content 3</mat-tab>
+          <mat-tab label="Headers"> Content 3</mat-tab>
+
+        </mat-tab-group>
       </div>
-      <div [class]="requestState()?.data?.state !== RequestExecutionStateEnum.LOADING ? 'opacity-0' : 'opacity-1'">
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      </div>
-      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-        <mat-tab label="Parameters">
-          <app-request-query-parameters
-            [parameters]="requestState()?.data?.params ?? defaultParameters"
-            (queryParametersChanged)="handleQueryParametersChange($event)"></app-request-query-parameters>
-        </mat-tab>
-        <mat-tab label="Authorization">
-          authorization
-        </mat-tab>
-        <mat-tab label="Headers">
-          <app-request-headers [headers]="requestState()?.data?.headers ?? []"
-                               (requestHeadersChanged)="handleRequestHeadersChange($event)"></app-request-headers>
-        </mat-tab>
-
-        <mat-tab label="Body">
-          <ng-template matTabContent>
-            <app-request-body [body]="requestState()?.data?.body ?? '{}'"
-                              (requestBodyChanged)="handleRequestBodyChange($event)"></app-request-body>
-          </ng-template>
-        </mat-tab>
-        <mat-tab label="Pre-request script"> Content 3</mat-tab>
-        <mat-tab label="Tests"> Content 3</mat-tab>
-        <mat-tab label="Settings"> Content 3</mat-tab>
-        <mat-tab label="Headers"> Content 3</mat-tab>
-
-      </mat-tab-group>
 
       <app-request-result class="w-100 make-request-container__results"></app-request-result>
     </div>

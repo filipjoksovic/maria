@@ -1,5 +1,6 @@
-<h2>Results</h2>
-<div class="results-container">
+<div class="drag-handle" cdkDrag (cdkDragMoved)="setHeight($event)" cdkDragLockAxis="y"></div>
+<div class="results-container" #resultsContainer>
+  <h2>Results</h2>
   @if (requestResult()?.responseContent !== '') {
     <div class="results-container__data">
       <div class="results-container__status">
