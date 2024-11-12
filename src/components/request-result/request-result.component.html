@@ -1,9 +1,14 @@
-<p>Results</p>
+<h2>Results</h2>
 <div class="results-container">
   @if (requestResult()?.responseContent !== '') {
-    <div class="results-container__status">
-      <span>{{ requestResult()?.requestStatus }}</span>
-      <span>{{ requestResult()?.requestStatusText }}</span>
+    <div class="results-container__data">
+      <div class="results-container__status">
+        <span>{{ requestResult()?.requestStatus }}</span>
+        <span>{{ requestResult()?.requestStatusText }}</span>
+      </div>
+      <div class="results-container__time">
+        <span>Time: {{ requestResult()?.timeTaken }}ms</span>
+      </div>
     </div>
     <ngs-code-editor [readOnly]="true" [codeModel]="model" [options]="options"></ngs-code-editor>
   } @else {

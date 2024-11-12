@@ -1,17 +1,17 @@
 <div class="sidebar">
-    <div class="section section__header">
-        <span>MARIA</span>
+  <div class="section section__header">
+    <span>MARIA</span>
 
-        <app-sidebar-header></app-sidebar-header>
-    </div>
-    <div class="requests-container">
-        @for (request of requests$(); track $index ) {
-        <app-request-link [request]="request" (requestDeleted)="handleRequestDelete($event)"></app-request-link>
-        }
-    </div>
-    <div class="section section__footer">
-        <button mat-button (click)="handleNewRequestClick()">New request</button>
-    </div>
+    <app-sidebar-header></app-sidebar-header>
+  </div>
+  <div class="requests-container">
+    @for (request of requests$(); track $index) {
+      <app-request-link [request]="request" (requestDeleted)="handleRequestDelete($event)"></app-request-link>
+    }
+  </div>
+  <div class="section section__footer">
+    <button mat-button (click)="handleNewRequestClick()">New request</button>
+  </div>
 
 
 </div>

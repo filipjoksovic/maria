@@ -1,4 +1,4 @@
-<div class="request-link" [class]="isActive$() ? 'request-link__active' : ''">
+<div class="request-link" [class]="activeUrl$() === request.url ? 'request-link__active' : ''">
   <a class="request-link__details" [routerLink]="'request/'+request.id">
     <span class="request-link__method" [class]="'text-'+getRequestMethodColor()">{{ request.method }}</span>
     <span class="request-link__name">{{ request.name }}</span>

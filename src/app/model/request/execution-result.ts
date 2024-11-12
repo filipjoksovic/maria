@@ -6,4 +6,6 @@ export interface ExecutionResults {
   status: string;
   body: any;
   headers: object;
+  timeStarted:Date;
+  timeEnded:Date;
 }

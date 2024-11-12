@@ -47,6 +47,7 @@ export class RequestEngineService {
         throw new Error("Unknown request type");
     }
 
+    const requestStarted = new Date();
     request$.subscribe({
       next: (event: HttpEvent<any>) => {
         if (event.type === HttpEventType.Response) {
@@ -55,7 +56,9 @@ export class RequestEngineService {
             code: event.status,
             status: event.statusText,
             body: event.body,
-            headers: event.headers
+            headers: event.headers,
+            timeStarted: requestStarted,
+            timeEnded: new Date()
           })
         }
       },
@@ -66,7 +69,9 @@ export class RequestEngineService {
           code: error.status,
           status: error.error,
           body: error.message,
-          headers: error.headers
+          headers: error.headers,
+          timeStarted: requestStarted,
+          timeEnded: new Date()
         })
       }
     })

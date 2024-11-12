@@ -548,7 +548,12 @@ app-request-result {
 
     &__status {
       display: flex;
-      gap: $spacer;
+      gap: $spacer/2;
+    }
+
+    &__data {
+      display: flex;
+      justify-content: space-between;
     }
   }
 }
@@ -628,5 +633,13 @@ app-make-request {
     padding: $spacer;
     //border-radius: $spacer;
   }
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+.opacity-1 {
+  opacity: 1;
 }
 

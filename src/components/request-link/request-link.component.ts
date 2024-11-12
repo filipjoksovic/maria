@@ -3,11 +3,11 @@ import {RequestModel} from '../../app/model/request.model';
 import {NgClass} from '@angular/common';
 import {typeConfigs} from '../../app/model/request-type.config';
 import {MatIcon} from '@angular/material/icon';
-import {ActivatedRoute, ParamMap, Route, Router, RouterLink} from '@angular/router';
-import {map, Observable, tap} from 'rxjs';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {filter, map, tap} from 'rxjs';
 import {toSignal} from '@angular/core/rxjs-interop';
-import {RequestSecurity} from '../../app/model/request-security.enum';
 import {RequestService} from '../../app/services/request.service';
+import {DataState} from "../../app/model/core/stateful-data.model";
 
 @Component({
   selector: 'app-request-link',
@@ -24,14 +24,20 @@ export class RequestLinkComponent implements OnInit {
   @Output()
   public requestDeleted: EventEmitter<string> = new EventEmitter<string>();
 
-  public isActive$!: Signal<boolean | undefined>;
+  public activeUrl$!: Signal<string>;
 
   constructor(private readonly route: ActivatedRoute, private readonly router: Router, private readonly requestService: RequestService) {
-    this.isActive$ = toSignal(this.requestService.activeRequest$.pipe(map(request => request.id === this.request.id)));
-
+    console.log(this.request);
+    this.activeUrl$ = toSignal(this.requestService.activeRequest$.pipe(
+      tap(console.log),
+      filter(data => data.state == DataState.LOADED),
+      map(data => data.data),
+      map(data => data.id)
+    ));
   }
 
   ngOnInit() {
+
   }
 
   getRequestMethodColor() {

@@ -4,6 +4,7 @@ import {BehaviorSubject} from "rxjs";
 import {RequestResultModel} from "../model/request/request-result.model";
 import {HttpResponse} from "@angular/common/http";
 import {ExecutionResults} from "../model/request/execution-result";
+import {getTimeDifference} from "../utils/date.utils";
 
 
 @Injectable({
@@ -20,22 +21,15 @@ export class RequestResultService {
   constructor() {
   }
 
-  public onResultReceived(request: RequestModel, response: HttpResponse<any>) {
-    console.log("Result received for request: ", request.id, JSON.stringify(response, null, "\t"));
-    const requestModel: RequestResultModel = {
-      responseContent: JSON.stringify(response.body, null, "\t"),
-      requestStatus: response.status,
-      requestStatusText: response.statusText
-    }
-    this._requestResult$.next(requestModel);
-  }
-
-  public onResultsReceived(request:ExecutionResults){
+  public onResultsReceived(request: ExecutionResults) {
     console.log("Result received for request: ", request.requestId, JSON.stringify(request, null, "\t"));
     const requestModel: RequestResultModel = {
       responseContent: JSON.stringify(request.body, null, "\t"),
       requestStatus: request.code,
-      requestStatusText: request.status
+      requestStatusText: request.status,
+      timeStarted: request.timeStarted,
+      timeEnded: request.timeEnded,
+      timeTaken: getTimeDifference(request.timeStarted, request.timeEnded)
     }
     this._requestResult$.next(requestModel);
   }

@@ -9,13 +9,14 @@ import { Observable } from 'rxjs';
 import { RequestModel } from '../../../app/model/request.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RequestLinkComponent } from '../../request-link/request-link.component';
+import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
   standalone: true,
-  imports: [MatIcon, MatButton, SidebarHeaderComponent, MatSidenavModule, RouterModule, RequestLinkComponent]
+  imports: [MatIcon, MatButton, SidebarHeaderComponent, MatSidenavModule, RouterModule, RequestLinkComponent, JsonPipe]
 })
 export class SidebarComponent implements OnInit {
 

@@ -5,27 +5,23 @@ import {RequestModel} from '../model/request.model';
 import {RequestTypeEnum} from '../model/request-type.enum';
 import {DataService} from './data.service';
 import {
-  HttpClient, HttpEvent,
+  HttpClient,
+  HttpEvent,
   HttpEventType,
   HttpHeaders,
   HttpParams,
   HttpRequest,
-  HttpResponse,
-  HttpResponseBase
+  HttpResponse
 } from "@angular/common/http";
 import {RequestResultService} from "./request-result.service";
 import {QueryParameterRow} from "../../components/request-query-parameters/request-query-parameters.component";
-import {
-  isValidQueryParameter, mapToHeaderParameter,
-  mapToHeaders,
-  mapToQueryParameter,
-  mapToQueryParameters,
-  trimParameters
-} from "../utils/params.utils";
+import {isValidQueryParameter, mapToHeaderParameter, mapToQueryParameter, trimParameters} from "../utils/params.utils";
 import {RequestHeaderRow} from "../../components/request-headers/request-headers.component";
 import {RequestSecurity} from "../model/request-security.enum";
-import {securityConfigs} from '../model/request-security.config';
 import {RequestEngineService} from "./core/request-engine.service";
+import {DataState, StatefulData} from "../model/core/stateful-data.model";
+import {RequestExecutionStateEnum, RequestModelState} from "../model/state/request-model.state";
+import {ExecutionResults} from "../model/request/execution-result";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +35,9 @@ export class RequestService {
   private readonly _requestAdded$: Subject<RequestModel> = new Subject<RequestModel>();
   private readonly _requestDeleted$: Subject<string> = new Subject<string>();
 
-  private readonly _activeRequest$: Subject<RequestModel> = new Subject();
+  private readonly _activeRequest$: BehaviorSubject<StatefulData<RequestModelState>> = new BehaviorSubject<StatefulData<RequestModelState>>(
+    {state: DataState.UNDEFINED} as StatefulData<RequestModelState>
+  );
   public readonly activeRequest$ = this._activeRequest$.asObservable();
 
   private readonly _requestSelected$: Subject<string> = new Subject();
@@ -74,7 +72,10 @@ export class RequestService {
         return this.requests$.pipe(map(requests => requests.find(request => request.id === requestId)))
       }),
       filter(request => request !== null && request !== undefined),
-      tap(request => this._activeRequest$.next(request))).subscribe();
+      tap(request => this._activeRequest$.next({
+        data: {...request, state: RequestExecutionStateEnum.UNDEFINED},
+        state: DataState.LOADED
+      }))).subscribe();
 
     this._requestUpdated$.pipe(
       switchMap((updateData) => {
@@ -98,9 +99,17 @@ export class RequestService {
       })
     ).subscribe();
 
-    this.requestEngineService.requestExecuted$.subscribe((result) => {
+    this.requestEngineService.requestExecuted$.subscribe((result:ExecutionResults) => {
       console.log("Request executed", result);
       this.requestResultService.onResultsReceived(result);
+      this._activeRequest$.next({
+        state: this._activeRequest$.value.state,
+        data: {
+          ...this._activeRequest$.value.data,
+          state: RequestExecutionStateEnum.LOADED,
+          timeEnded: new Date()
+        }
+      } as StatefulData<RequestModelState>)
     });
 
   }
@@ -174,87 +183,15 @@ export class RequestService {
   }
 
   executeRequest(requestModel: RequestModel) {
+    this._activeRequest$.next({
+      state: this._activeRequest$.value.state,
+      data: {
+        ...requestModel,
+        state: RequestExecutionStateEnum.LOADING,
+        timeStarted: new Date()
+      }
+    } as StatefulData<RequestModelState>)
     this.requestEngineService.executeHttpRequest(requestModel);
-  }
-
-  private handleDelete(requestModel: RequestModel) {
-    const options = {
-      params: this.createHttpParams(requestModel),
-      headers: this.createHeaders(requestModel)
-    }
-    console.log("Options", options);
-    this.http.delete(requestModel.url, options).subscribe((response: any) => {
-      switch (response.type) {
-        case HttpEventType.Response:
-          this.requestResultService.onResultReceived(requestModel, response as HttpResponse<any>);
-
-      }
-    });
-  }
-
-  private handlePut(requestModel: RequestModel) {
-    const options = {
-      params: this.createHttpParams(requestModel),
-      headers: this.createHeaders(requestModel)
-    }
-    console.log("Options", options);
-    this.http.put(requestModel.url, options).subscribe((response: any) => {
-      switch (response.type) {
-        case HttpEventType.Response:
-          this.requestResultService.onResultReceived(requestModel, response as HttpResponse<any>);
-
-      }
-    });
-  }
-
-  private handleGet(requestModel: RequestModel) {
-    const options = {
-      params: this.createHttpParams(requestModel),
-      headers: this.createHeaders(requestModel)
-    }
-
-    const request = new HttpRequest('GET', requestModel.url, options);
-    console.log("Options", options);
-    this.http.request(request).subscribe((response: HttpEvent<any>) => {
-      console.log(response);
-      switch (response.type) {
-        case HttpEventType.Response:
-          this.requestResultService.onResultReceived(requestModel, response as HttpResponse<any>);
-      }
-    });
-  }
-
-  private createHttpParams(requestModel: RequestModel): HttpParams {
-    let httpParams = new HttpParams();
-    requestModel.params!.map((params) => mapToQueryParameter(params)).map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
-      httpParams = httpParams.append(param.name, param.value);
-    });
-
-    return httpParams;
-
-  }
-
-  private createHeaders(requestModel: RequestModel): HttpHeaders {
-    let headers = new HttpHeaders();
-    requestModel.headers!.map((params) => mapToHeaderParameter(params)).map(trimParameters).filter(isValidQueryParameter).forEach((param) => {
-      headers = headers.set(param.name, param.value);
-    });
-    return headers;
-  }
-
-
-  private handlePost(requestModel: RequestModel) {
-    const options = {
-      params: this.createHttpParams(requestModel),
-      headers: this.createHeaders(requestModel),
-    }
-    this.http.post(requestModel.url, requestModel.body, options).subscribe((response: any) => {
-      switch (response.type) {
-        case HttpEventType.Response:
-          this.requestResultService.onResultReceived(requestModel, response as HttpResponse<any>);
-
-      }
-    });
   }
 
   changeQueryParameters(requestModel: RequestModel, $event: QueryParameterRow[]) {

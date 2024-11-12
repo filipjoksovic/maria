@@ -19,12 +19,15 @@ import {RequestHeaderRow, RequestHeadersComponent} from "../../components/reques
 import {RequestBodyComponent} from "../../components/request-body/request-body.component";
 import {CodeEditorComponent} from "@ngstack/code-editor";
 import {RequestSecurity} from "../../app/model/request-security.enum";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {DataState, StatefulData} from "../../app/model/core/stateful-data.model";
+import {RequestExecutionStateEnum, RequestModelState} from "../../app/model/state/request-model.state";
 
 @Component({
   selector: 'app-make-request',
   templateUrl: './make-request.component.html',
   styleUrls: ['./make-request.component.css'],
-  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule, RequestHeadersComponent, RequestBodyComponent, CodeEditorComponent],
+  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule, RequestHeadersComponent, RequestBodyComponent, CodeEditorComponent, MatProgressBarModule],
   standalone: true
 })
 export class MakeRequestComponent implements OnInit, OnChanges {
@@ -32,12 +35,12 @@ export class MakeRequestComponent implements OnInit, OnChanges {
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly requestService = inject(RequestService);
 
-  public request!: Signal<RequestModel | undefined>;
+  public requestState!: Signal<StatefulData<RequestModelState> | undefined>;
   defaultParameters: QueryParameterRow[] = [] as QueryParameterRow[];
 
 
   constructor() {
-    this.request = toSignal(this.requestService.activeRequest$);
+    this.requestState = toSignal(this.requestService.activeRequest$);
   }
 
   ngOnInit() {
@@ -54,46 +57,46 @@ export class MakeRequestComponent implements OnInit, OnChanges {
 
 
   handleNameChange(evt: string) {
-    if (this.request() === undefined) {
+    if (this.requestState() === undefined) {
       return;
     }
     console.log('hree');
 
-    this.requestService.updateRequest(this.request()!, {
+    this.requestService.updateRequest(this.requestState()?.data!, {
       name: evt
     })
   }
 
   handleMethodChange($event: RequestTypeEnum) {
-    if (this.request() === undefined) {
+    if (this.requestState() === undefined) {
       return;
     }
     console.log('hree');
 
-    this.requestService.updateRequest(this.request()!, {
+    this.requestService.updateRequest(this.requestState()?.data!, {
       method: $event
     })
   }
 
   handleUrlChange($event: string) {
-    if (this.request() === undefined) {
+    if (this.requestState() === undefined) {
       return;
     }
-    this.requestService.updateRequest(this.request()!, {
+    this.requestService.updateRequest(this.requestState()?.data!, {
       url: $event
     })
   }
 
   handleSendRequest() {
-    this.requestService.executeRequest(this.request()!);
+    this.requestService.executeRequest(this.requestState()?.data!);
   }
 
   handleQueryParametersChange($event: QueryParameterRow[]) {
-    this.requestService.changeQueryParameters(this.request()!, $event);
+    this.requestService.changeQueryParameters(this.requestState()?.data!, $event);
   }
 
   handleRequestHeadersChange($event: RequestHeaderRow[]) {
-    this.requestService.changeHeaders(this.request()!, $event);
+    this.requestService.changeHeaders(this.requestState()?.data!, $event);
 
   }
 
@@ -102,7 +105,7 @@ export class MakeRequestComponent implements OnInit, OnChanges {
     try {
       JSON.parse(body);
       console.log('valid JSON');
-      this.requestService.handleBodyChange(this.request()!, body);
+      this.requestService.handleBodyChange(this.requestState()?.data!, body);
     } catch (e) {
       console.log("Invalid JSON");
       return;
@@ -110,6 +113,9 @@ export class MakeRequestComponent implements OnInit, OnChanges {
   }
 
   handleTypeChanged($event: RequestSecurity) {
-    this.requestService.changeType(this.request()!, $event);
+    this.requestService.changeType(this.requestState()?.data!, $event);
   }
+
+  protected readonly DataState = DataState;
+  protected readonly RequestExecutionStateEnum = RequestExecutionStateEnum;
 }

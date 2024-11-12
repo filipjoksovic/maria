@@ -6,6 +6,7 @@ import {MatInput, MatInputModule} from "@angular/material/input";
 import {FormsModule} from "@angular/forms";
 import {CodeEditorComponent, CodeModel} from "@ngstack/code-editor";
 import {RequestResultModel} from "../../app/model/request/request-result.model";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-request-result',
@@ -14,7 +15,8 @@ import {RequestResultModel} from "../../app/model/request/request-result.model";
     FormsModule,
     MatInputModule,
     MatFormFieldModule,
-    CodeEditorComponent
+    CodeEditorComponent,
+    DatePipe
   ],
   templateUrl: './request-result.component.html',
   styleUrl: './request-result.component.scss'
