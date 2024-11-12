@@ -1,4 +1,14 @@
-import {Component, EventEmitter, inject, OnChanges, OnInit, Output, Signal, SimpleChanges} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  Signal,
+  SimpleChanges
+} from '@angular/core';
 import {RequestInputComponent} from '../../components/request-input/request-input.component';
 import {RequestNameComponent} from '../../components/request-name/request-name.component';
 import {ActivatedRoute} from "@angular/router";
@@ -30,7 +40,7 @@ import {RequestExecutionStateEnum, RequestModelState} from "../../app/model/stat
   imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule, RequestHeadersComponent, RequestBodyComponent, CodeEditorComponent, MatProgressBarModule],
   standalone: true
 })
-export class MakeRequestComponent implements OnInit, OnChanges {
+export class MakeRequestComponent implements OnInit, OnChanges, OnDestroy {
 
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly requestService = inject(RequestService);
@@ -49,6 +59,10 @@ export class MakeRequestComponent implements OnInit, OnChanges {
       this.requestService.setActiveRequest(params.get("id"));
     })
 
+  }
+
+  ngOnDestroy() {
+    console.log('destroying');
   }
 
   ngOnChanges(changes: SimpleChanges) {

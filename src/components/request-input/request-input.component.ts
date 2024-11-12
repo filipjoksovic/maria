@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {AddressInputComponent} from '../address-input/address-input.component';
 import {DropdownComponent} from "../core/dropdown/dropdown.component";
 import {RequestConfiguration, typeConfigs} from '../../app/model/request-type.config';
@@ -10,19 +10,33 @@ import {filter, map, pairwise, startWith, tap} from "rxjs";
 import {securityConfigs} from "../../app/model/request-security.config";
 import {RequestSecurity} from "../../app/model/request-security.enum";
 import {MatButton} from "@angular/material/button";
+import {JsonPipe} from "@angular/common";
 
 @Component({
   selector: 'app-request-input',
   templateUrl: './request-input.component.html',
   styleUrls: ['./request-input.component.css'],
   standalone: true,
-  imports: [AddressInputComponent, DropdownComponent, ButtonComponent, ReactiveFormsModule, MatButton]
+  imports: [AddressInputComponent, DropdownComponent, ButtonComponent, ReactiveFormsModule, MatButton, JsonPipe]
 })
 export class RequestInputComponent implements OnInit {
   protected requestConfig: RequestConfiguration = typeConfigs;
 
+  private _request!: RequestModel | undefined;
+
   @Input()
-  public request!: RequestModel | undefined;
+  public set request(value: RequestModel | undefined) {
+    this._request = value;
+    this.requestForm?.patchValue({
+      method: value?.method,
+      url: value?.url,
+      type: value?.type
+    })
+  }
+
+  public get request(): RequestModel | undefined {
+    return this._request;
+  }
 
   @Output()
   public sendRequest: EventEmitter<void> = new EventEmitter<void>;

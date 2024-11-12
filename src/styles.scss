@@ -4,9 +4,9 @@
 
 $spacer: 1rem;
 $electric-violet: oklch(0.931 0 89.876);
-$bg-sidebar: mat.get-theme-color($light-theme, primary);
+$bg-sidebar: mat.get-theme-color($light-theme, primary, 90);
 $bg-primary: mat.get-theme-color($light-theme, primary, 90);
-$bg-surface: mat.get-theme-color($light-theme, primary, 80);
+$bg-surface: mat.get-theme-color($light-theme, primary, 95);
 $bg-secondary: mat.get-theme-color($light-theme, tertiary, 30);
 
 $success: #99C1B9;
