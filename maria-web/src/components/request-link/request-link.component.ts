@@ -8,13 +8,14 @@ import {filter, map, tap} from 'rxjs';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {RequestService} from '../../app/services/request.service';
 import {DataState} from "../../app/model/core/stateful-data.model";
+import {NzMenuItemComponent} from "ng-zorro-antd/menu";
 
 @Component({
   selector: 'app-request-link',
   templateUrl: './request-link.component.html',
   styleUrls: ['./request-link.component.css'],
   standalone: true,
-  imports: [NgClass, MatIcon, RouterLink]
+  imports: [NgClass, MatIcon, RouterLink, NzMenuItemComponent]
 })
 export class RequestLinkComponent implements OnInit {
 

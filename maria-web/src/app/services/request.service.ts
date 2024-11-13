@@ -50,7 +50,7 @@ export class RequestService {
               private readonly requestResultService: RequestResultService,
               private readonly requestEngineService: RequestEngineService) {
     this._requests$ = new BehaviorSubject<RequestModel[]>(this.fetchRequestsFromDataStore());
-    this.requests$ = this._requests$.asObservable();
+    this.requests$ = this._requests$.asObservable().pipe(map(requests => requests.sort((a, b) => a.name.localeCompare(b.name))));
 
     this._requestAdded$.subscribe((requestToAdd) => {
       const currentData = this._requests$.value;
@@ -99,7 +99,7 @@ export class RequestService {
       })
     ).subscribe();
 
-    this.requestEngineService.requestExecuted$.subscribe((result:ExecutionResults) => {
+    this.requestEngineService.requestExecuted$.subscribe((result: ExecutionResults) => {
       console.log("Request executed", result);
       this.requestResultService.onResultsReceived(result);
       this._activeRequest$.next({
@@ -172,9 +172,6 @@ export class RequestService {
       return;
     }
 
-    console.log("Request", request);
-    console.log("Update", updateData);
-    console.log("Updating request");
     this._requestUpdated$.next({
       ...request,
       ...updateData

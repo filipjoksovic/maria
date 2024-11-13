@@ -1,16 +1,17 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DropdownDataConfiguration} from '../../../app/model/core/dropdown-data.model';
-import {KeyValuePipe, NgClass, NgFor} from '@angular/common';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
+import {JsonPipe, KeyValuePipe, NgClass, NgFor} from '@angular/common';
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectChange, MatSelectModule} from "@angular/material/select";
+import {NzSelectComponent, NzSelectModule} from "ng-zorro-antd/select";
 
 @Component({
   selector: 'app-dropdown',
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.css'],
   standalone: true,
-  imports: [NgFor, KeyValuePipe, NgClass, ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
+  imports: [NgFor, KeyValuePipe, NgClass, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, NzSelectModule, FormsModule, JsonPipe],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -74,6 +75,10 @@ export class DropdownComponent<T extends number | symbol | string> implements Co
 
   markAsTouched(): void {
     this.onTouched();
+  }
+
+  handle($event: any) {
+    this.onChange($event);
   }
 
 }

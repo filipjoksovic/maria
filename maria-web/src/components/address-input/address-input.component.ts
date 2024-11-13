@@ -6,13 +6,14 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@ang
 import {RequestSecurity} from "../../app/model/request-security.enum";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {NzInputModule} from "ng-zorro-antd/input";
 
 @Component({
   selector: 'app-address-input',
   templateUrl: './address-input.component.html',
   styleUrls: ['./address-input.component.css'],
   standalone: true,
-  imports: [NgFor, KeyValuePipe, DropdownComponent, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [NgFor, KeyValuePipe, DropdownComponent, ReactiveFormsModule, MatFormFieldModule, MatInputModule, NzInputModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

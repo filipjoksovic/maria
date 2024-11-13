@@ -1,5 +1,7 @@
 <div class="drag-handle" cdkDrag (cdkDragMoved)="setHeight($event)" cdkDragLockAxis="y"></div>
-<div class="results-container" #resultsContainer>
+<div class="results-container" #resultsContainer nz-resizable
+     (nzResize)="onResize($event)">
+
   <h2>Results</h2>
   @if (requestResult()?.responseContent !== '') {
     <div class="results-container__data">

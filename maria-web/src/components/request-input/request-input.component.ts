@@ -11,13 +11,16 @@ import {securityConfigs} from "../../app/model/request-security.config";
 import {RequestSecurity} from "../../app/model/request-security.enum";
 import {MatButton} from "@angular/material/button";
 import {JsonPipe} from "@angular/common";
+import {NzFlexDirective, NzFlexModule} from "ng-zorro-antd/flex";
+import {NzSpaceComponent, NzSpaceItemDirective, NzSpaceModule} from "ng-zorro-antd/space";
+import {NzButtonComponent, NzButtonModule} from "ng-zorro-antd/button";
 
 @Component({
   selector: 'app-request-input',
   templateUrl: './request-input.component.html',
   styleUrls: ['./request-input.component.css'],
   standalone: true,
-  imports: [AddressInputComponent, DropdownComponent, ButtonComponent, ReactiveFormsModule, MatButton, JsonPipe]
+  imports: [AddressInputComponent, DropdownComponent, ButtonComponent, ReactiveFormsModule, MatButton, JsonPipe,NzFlexModule, NzSpaceModule, NzButtonModule]
 })
 export class RequestInputComponent implements OnInit {
   protected requestConfig: RequestConfiguration = typeConfigs;

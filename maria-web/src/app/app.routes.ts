@@ -1,31 +1,16 @@
-import { Routes } from '@angular/router';
-import { HomePageComponent } from '../pages/home.page/home.page.component';
-import { WelcomeComponent } from '../pages/welcome/welcome.component';
-import { SetupComponent } from '../pages/setup/setup.component';
-import { MakeRequestComponent } from '../pages/make-request/make-request.component';
+import {Routes} from '@angular/router';
+import {HomePageComponent} from "../pages/home.page/home.page.component";
+import {MakeRequestComponent} from "../pages/make-request/make-request.component";
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: HomePageComponent,
-        children: [
-            {
-                path: 'new',
-                component: MakeRequestComponent
-            },
-            {
-                path:"request/:id",
-                component: MakeRequestComponent
-            }
-        ]
-    },
-    {
-        path: 'welcome',
-        component: WelcomeComponent
-    },
-    {
-        path: 'setup',
-        component: SetupComponent
-    },
-
+  {path: '', pathMatch: 'full', redirectTo: '/welcome'},
+  {path: 'welcome', loadChildren: () => import('./pages/welcome/welcome.routes').then(m => m.WELCOME_ROUTES)},
+  {
+    path: 'new',
+    component: MakeRequestComponent
+  },
+  {
+    path: "request/:id",
+    component: MakeRequestComponent
+  }
 ];

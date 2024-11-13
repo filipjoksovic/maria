@@ -39,9 +39,15 @@
                 "glob": "**/*.js",
                 "input": "./node_modules/@ngstack/code-editor/workers",
                 "output": "/assets/workers"
+              },
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
               }
             ],
             "styles": [
+              "src/theme.less",
               "src/styles.scss",
               "src/cssm3-theme.scss"
             ],

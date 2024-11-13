@@ -32,13 +32,16 @@ import {RequestSecurity} from "../../app/model/request-security.enum";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {DataState, StatefulData} from "../../app/model/core/stateful-data.model";
 import {RequestExecutionStateEnum, RequestModelState} from "../../app/model/state/request-model.state";
+import {NzResizableModule, NzResizeEvent} from "ng-zorro-antd/resizable";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {NzTypographyModule} from "ng-zorro-antd/typography";
 
 @Component({
   selector: 'app-make-request',
   templateUrl: './make-request.component.html',
   styleUrls: ['./make-request.component.css'],
-  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule, RequestHeadersComponent, RequestBodyComponent, CodeEditorComponent, MatProgressBarModule],
-  standalone: true
+  imports: [RequestInputComponent, RequestNameComponent, JsonPipe, RequestResultComponent, MatGridListModule, RequestQueryParametersComponent, MatTabsModule, RequestHeadersComponent, RequestBodyComponent, CodeEditorComponent, MatProgressBarModule, NzResizableModule, NzIconModule, NzTypographyModule],
+  standalone: true,
 })
 export class MakeRequestComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -132,4 +135,5 @@ export class MakeRequestComponent implements OnInit, OnChanges, OnDestroy {
 
   protected readonly DataState = DataState;
   protected readonly RequestExecutionStateEnum = RequestExecutionStateEnum;
+
 }

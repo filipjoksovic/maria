@@ -1,6 +1,6 @@
-<form [formGroup]="requestForm">
+<form [formGroup]="requestForm" class="w-100">
   <app-dropdown formControlName="method" label='Method' [data]="requestConfig"></app-dropdown>
   <app-dropdown formControlName="type" label="Type" [data]="securityConfigs"></app-dropdown>
   <app-address-input formControlName="url"></app-address-input>
-  <button mat-button (click)="dispatchSendRequest()">Send</button>
+  <button nz-button (click)="dispatchSendRequest()">Send</button>
 </form>

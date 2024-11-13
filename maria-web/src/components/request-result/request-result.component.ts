@@ -8,6 +8,8 @@ import {CodeEditorComponent, CodeModel} from "@ngstack/code-editor";
 import {RequestResultModel} from "../../app/model/request/request-result.model";
 import {DatePipe} from "@angular/common";
 import {CdkDrag, CdkDragHandle, CdkDragMove} from "@angular/cdk/drag-drop";
+import {NzResizableDirective, NzResizableModule, NzResizeEvent, NzResizeHandleComponent} from "ng-zorro-antd/resizable";
+import {NzIconDirective} from "ng-zorro-antd/icon";
 
 @Component({
   selector: 'app-request-result',
@@ -19,10 +21,32 @@ import {CdkDrag, CdkDragHandle, CdkDragMove} from "@angular/cdk/drag-drop";
     CodeEditorComponent,
     DatePipe,
     CdkDrag,
-    CdkDragHandle
+    CdkDragHandle,
+    NzResizableDirective,
+    NzIconDirective,
+    NzResizableModule
   ],
   templateUrl: './request-result.component.html',
-  styleUrl: './request-result.component.scss'
+  styleUrl: './request-result.component.scss',
+  styles: [
+    `
+      .right-wrap {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .right {
+        background: #fff;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-size: 12px;
+        height: 20px;
+        line-height: 20px;
+      }
+    `
+  ]
 })
 export class RequestResultComponent {
   public model: CodeModel = {
@@ -57,9 +81,22 @@ export class RequestResultComponent {
     const element = this.resultEditor.nativeElement as HTMLElement;
     const parent = element.parentElement as HTMLElement;
     const parentY = parent.getBoundingClientRect().top;
-    const parentHeight = parent.getBoundingClientRect().height;
+    const parentHeight = parent.getBoundingClientRect().bottom - parentY;
     const y = $event.pointerPosition.y;
     const height = parentY + parentHeight - y - 16;
     element.style.height = height + "px";
+  }
+
+
+  width = 400;
+  height = 200;
+  id = -1;
+
+  onResize({width, height}: NzResizeEvent): void {
+    cancelAnimationFrame(this.id);
+    this.id = requestAnimationFrame(() => {
+      this.width = width!;
+      this.height = height!;
+    });
   }
 }

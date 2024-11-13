@@ -1,8 +1,5 @@
-<mat-form-field>
-  <mat-label>{{ label }}</mat-label>
-  <mat-select required [value]="activeValue" (selectionChange)="handleSelectionChange($event)">
-    <ng-container *ngFor="let item of data | keyvalue">
-      <mat-option [value]="item.key">{{ item.key }}</mat-option>
-    </ng-container>
-  </mat-select>
-</mat-form-field>
+<nz-select [ngModel]="activeValue" (ngModelChange)="handle($event)">
+  <ng-container *ngFor="let item of data | keyvalue">
+    <nz-option [nzValue]="item.key" [nzLabel]="item.key"></nz-option>
+  </ng-container>
+</nz-select>

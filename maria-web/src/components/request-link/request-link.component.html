@@ -1,9 +1,16 @@
-<div class="request-link" [class]="activeUrl$() === request.url ? 'request-link__active' : ''">
+<!--<div class="request-link" [class]="activeUrl$() === request.url ? 'request-link__active' : ''">-->
+<!--  <a class="request-link__details" [routerLink]="'request/'+request.id">-->
+<!--    <span class="request-link__method" [class]="'text-'+getRequestMethodColor()">{{ request.method }}</span>-->
+<!--    <span class="request-link__name">{{ request.name }}</span>-->
+<!--  </a>-->
+<!--  <button class="request-link__remove" (click)="handleDeleteRequest(request.id)">-->
+<!--    <mat-icon fontIcon="close"></mat-icon>-->
+<!--  </button>-->
+<!--</div>-->
+
+<li nz-menu-item nzMatchRouter>
   <a class="request-link__details" [routerLink]="'request/'+request.id">
     <span class="request-link__method" [class]="'text-'+getRequestMethodColor()">{{ request.method }}</span>
     <span class="request-link__name">{{ request.name }}</span>
   </a>
-  <button class="request-link__remove" (click)="handleDeleteRequest(request.id)">
-    <mat-icon fontIcon="close"></mat-icon>
-  </button>
-</div>
+</li>
