@@ -1,4 +1,4 @@
-package org.maria.model.enums;
+package org.maria.request.enums;
 
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;

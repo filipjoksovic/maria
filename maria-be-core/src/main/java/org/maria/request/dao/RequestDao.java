@@ -1,11 +1,11 @@
-package org.maria.dao;
+package org.maria.request.dao;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.maria.entity.RequestEntity;
+import org.maria.request.entity.RequestEntity;
 
 import java.util.List;
 

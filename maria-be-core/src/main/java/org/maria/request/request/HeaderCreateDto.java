@@ -1,4 +1,4 @@
-package org.maria.dto.request;
+package org.maria.request.request;
 
 import lombok.Data;
 

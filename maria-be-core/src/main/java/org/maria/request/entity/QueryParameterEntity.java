@@ -1,12 +1,12 @@
-package org.maria.entity;
+package org.maria.request.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
 @Entity
-@Table(name = "REQUEST_HEADERS")
-public class RequestHeaderEntity {
+@Data
+@Table(name = "QUERY_PARAMETERS")
+public class QueryParameterEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

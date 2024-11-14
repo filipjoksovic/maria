@@ -1,10 +1,10 @@
-package org.maria.impl;
+package org.maria.request.impl;
 
 import jakarta.inject.Inject;
-import org.maria.api.RequestCrudService;
-import org.maria.dao.RequestDao;
-import org.maria.dto.request.RequestCreateModelDto;
-import org.maria.mapper.RequestMapper;
+import org.maria.request.api.RequestCrudService;
+import org.maria.request.dao.RequestDao;
+import org.maria.request.request.RequestCreateModelDto;
+import org.maria.request.mapper.RequestMapper;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.maria.model.enums;
+package org.maria.request.enums;
 
 public enum RequestSecurity {
     HTTP,

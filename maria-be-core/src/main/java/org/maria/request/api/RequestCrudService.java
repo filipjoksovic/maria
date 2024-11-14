@@ -1,7 +1,7 @@
-package org.maria.api;
+package org.maria.request.api;
 
 import jakarta.ws.rs.*;
-import org.maria.dto.request.RequestCreateModelDto;
+import org.maria.request.request.RequestCreateModelDto;
 
 import java.util.List;
 

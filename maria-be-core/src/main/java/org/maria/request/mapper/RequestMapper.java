@@ -1,13 +1,13 @@
-package org.maria.mapper;
+package org.maria.request.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
-import org.maria.dto.request.HeaderCreateDto;
-import org.maria.dto.request.QueryParameterCreateDto;
-import org.maria.dto.request.RequestCreateModelDto;
-import org.maria.entity.QueryParameterEntity;
-import org.maria.entity.RequestEntity;
-import org.maria.entity.RequestHeaderEntity;
+import org.maria.request.request.HeaderCreateDto;
+import org.maria.request.request.QueryParameterCreateDto;
+import org.maria.request.request.RequestCreateModelDto;
+import org.maria.request.entity.QueryParameterEntity;
+import org.maria.request.entity.RequestEntity;
+import org.maria.request.entity.RequestHeaderEntity;
 
 import java.util.List;
 

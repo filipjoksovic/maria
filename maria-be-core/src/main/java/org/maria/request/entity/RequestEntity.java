@@ -1,9 +1,9 @@
-package org.maria.entity;
+package org.maria.request.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.maria.model.enums.RequestMethod;
-import org.maria.model.enums.RequestSecurity;
+import org.maria.request.enums.RequestMethod;
+import org.maria.request.enums.RequestSecurity;
 
 import java.util.List;
 
