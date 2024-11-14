@@ -1,0 +1,57 @@
+<form nz-form [formGroup]="form" (ngSubmit)="onSubmit()" class="signup-form">
+  <nz-form-item>
+    <nz-form-label class="d-block" nzFor="firstName" nzRequired>First name</nz-form-label>
+    <nz-form-control nzErrorTip="Please input your firstName!">
+      <input nz-input type="text" id="firstName" formControlName="firstName"/>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label class="d-block" nzFor="lastName" nzRequired>Last name</nz-form-label>
+    <nz-form-control nzErrorTip="Please input your lastName!">
+      <input nz-input type="text" id="lastName" formControlName="lastName"/>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label class="d-block" nzRequired nzFor="email">E-mail</nz-form-label>
+    <nz-form-control nzErrorTip="The input is not valid E-mail!">
+      <input nz-input formControlName="email" id="email"/>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label class="d-block" nzFor="password" nzRequired>Password</nz-form-label>
+    <nz-form-control nzErrorTip="Please input your password!">
+      <input nz-input type="password" id="password" formControlName="password"/>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label class="d-block" nzFor="checkPassword" nzRequired>Confirm Password</nz-form-label>
+    <nz-form-control [nzErrorTip]="errorTpl">
+      <input nz-input type="password" formControlName="checkPassword" id="checkPassword"/>
+      <ng-template #errorTpl let-control>
+        @if (control.errors?.['required']) {
+          Please confirm your password!
+        }
+        @if (control.errors?.['confirm']) {
+          Two passwords that you enter is inconsistent!
+        }
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item nz-row class="register-area">
+    <nz-form-control>
+      <label nz-checkbox formControlName="agree">
+            <span>
+              I have read the
+              <a>agreement</a>
+            </span>
+      </label>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item nz-row class="register-area">
+    <nz-form-control>
+      <button nz-button nzType="primary">Register</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>

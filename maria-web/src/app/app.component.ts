@@ -19,12 +19,6 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  isCollapsed = false;
 
-  public requests$: Signal<RequestModel[] | undefined>;
-
-  constructor(private readonly router: Router, private readonly requestService: RequestService) {
-    this.requests$ = toSignal(requestService.requests$);
-  }
 
 }
