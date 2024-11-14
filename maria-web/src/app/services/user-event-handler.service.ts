@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserService, UserServiceEvent } from './user.service';
+import { UserService, UserServiceEvent } from './user/user.service';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -9,7 +9,7 @@ export class UserEventHandlerService {
 
   constructor(private readonly userService: UserService, private readonly router: Router) {
     console.log("Injected 1");
-    
+
     this.userService.eventDispatcher$.subscribe((event: UserServiceEvent) => {
       console.log('event received', event);
       this.handleEvent(event);

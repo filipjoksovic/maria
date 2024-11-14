@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { UserService, UserServiceEvent } from '../../app/services/user.service';
+import { UserService, UserServiceEvent } from '../../app/services/user/user.service';
 import { UserEventHandlerService } from '../../app/services/user-event-handler.service';
 
 @Component({
