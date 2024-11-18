@@ -6,6 +6,9 @@ import {NzFormModule} from "ng-zorro-antd/form";
 import {NzInputModule} from "ng-zorro-antd/input";
 import {NzSelectModule} from "ng-zorro-antd/select";
 import {UserService} from "../../app/services/user/user.service";
+import {filter} from "rxjs";
+import {DataState} from "../../app/model/core/stateful-data.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-signup-page',
@@ -18,6 +21,7 @@ export class SignupPageComponent {
 
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
   private readonly userService: UserService = inject(UserService);
+  private readonly router: Router = inject(Router);
 
   public form!: FormGroup;
 
@@ -29,6 +33,11 @@ export class SignupPageComponent {
       firstName: [''],
       lastName: [''],
       agree: [false]
+    });
+
+    this.userService.user$.pipe(filter(userState => userState.state === DataState.LOADED)).subscribe(userState => {
+      console.log('User created successfully:', userState.data);
+      this.router.navigate(['/new']);
     });
   }
 

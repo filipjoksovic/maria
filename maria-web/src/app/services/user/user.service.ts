@@ -22,7 +22,7 @@ export class UserService {
     state: DataState.UNDEFINED,
   } as StatefulData<UserModel>);
 
-  private readonly user$ = this._user$.asObservable().pipe(filter((statefulData: StatefulData<UserModel>) => statefulData.state !== DataState.UNDEFINED));
+  public readonly user$ = this._user$.asObservable().pipe(filter((statefulData: StatefulData<UserModel>) => statefulData.state !== DataState.UNDEFINED));
 
   constructor(private readonly storageService: DataService, private readonly userService: UserApiService) {
     this.user$.pipe(filter((statefulData: StatefulData<UserModel>) => statefulData.state === DataState.LOADED)).subscribe(_ => {
