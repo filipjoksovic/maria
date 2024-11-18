@@ -13,4 +13,8 @@ export class UserApiService {
   public createUser(user: Partial<UserModel>) {
     return this.http.post<UserModel>(`http://localhost:8080/user/account`, user);
   }
+
+  getUser(id: number) {
+    return this.http.get<UserModel>(`http://localhost:8080/user/${id}`);
+  }
 }

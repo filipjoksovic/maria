@@ -54,3 +54,34 @@
     </nz-content>
   </nz-layout>
 </nz-layout>
+
+<nz-modal
+  [(nzVisible)]="isVisibleMiddle"
+  [nzFooter]="null"
+  nzTitle="Your account"
+  nzCentered
+  (nzOnCancel)="handleCancelMiddle()"
+  (nzOnOk)="handleOkMiddle()"
+>
+  <ng-container *nzModalContent>
+    <h3>Account</h3>
+    <div class="section">
+      <label class="d-block" for="email">Email</label>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="Please input your email!">
+          <input nz-input type="text" id="email"/>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div class="section">
+      <p>Password</p>
+      <button nz-button>Change password</button>
+    </div>
+
+
+    <nz-divider></nz-divider>
+
+    <h3>Profile</h3>
+  </ng-container>
+</nz-modal>

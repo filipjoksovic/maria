@@ -1,4 +1,4 @@
-import {Component, Signal} from '@angular/core';
+import {Component, inject, OnInit, Signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -10,6 +10,7 @@ import {toSignal} from "@angular/core/rxjs-interop";
 import {RequestLinkComponent} from "../components/request-link/request-link.component";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NzButtonComponent} from "ng-zorro-antd/button";
+import {UserService} from "./services/user/user.service";
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,13 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
+  //TODO move all of this logic to a guard or a resolver if necessary
 
+  private readonly userService = inject(UserService);
+
+  ngOnInit() {
+    this.userService.resolveUser();
+  }
 
 }
