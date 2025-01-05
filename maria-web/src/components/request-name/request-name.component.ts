@@ -33,6 +33,7 @@ export class RequestNameComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log(this.request)
     this.value = this.request?.name ?? "New Request";
   }
 

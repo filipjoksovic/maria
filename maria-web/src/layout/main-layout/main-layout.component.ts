@@ -23,6 +23,7 @@ import {NzFormControlComponent, NzFormItemComponent, NzFormLabelComponent} from 
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {PaginatorModule} from "primeng/paginator";
 import {ReactiveFormsModule} from "@angular/forms";
+import {ActiveRequestsService} from "../../app/services/active-requests.service";
 
 @Component({
   selector: 'app-main-layout',
@@ -40,7 +41,7 @@ export class MainLayoutComponent {
 
   public requests$: Signal<RequestModel[] | undefined>;
 
-  constructor(private readonly router: Router, private readonly requestService: RequestService) {
+  constructor(private readonly router: Router, private readonly requestService: RequestService, private readonly activeRequestsService:ActiveRequestsService) {
     this.requests$ = toSignal(requestService.requests$);
   }
 
@@ -50,5 +51,9 @@ export class MainLayoutComponent {
 
   handleOkMiddle() {
 
+  }
+
+  createNewRequest() {
+    this.activeRequestsService.createBlankRequest();
   }
 }

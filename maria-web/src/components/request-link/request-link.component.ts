@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, Signal} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output, Signal} from '@angular/core';
 import {RequestModel} from '../../app/model/request.model';
 import {NgClass} from '@angular/common';
 import {typeConfigs} from '../../app/model/request-type.config';
@@ -9,6 +9,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {RequestService} from '../../app/services/request.service';
 import {DataState} from "../../app/model/core/stateful-data.model";
 import {NzMenuItemComponent} from "ng-zorro-antd/menu";
+import {ActiveRequestsService} from "../../app/services/active-requests.service";
 
 @Component({
   selector: 'app-request-link',
@@ -18,6 +19,8 @@ import {NzMenuItemComponent} from "ng-zorro-antd/menu";
   imports: [NgClass, MatIcon, RouterLink, NzMenuItemComponent]
 })
 export class RequestLinkComponent implements OnInit {
+
+  private readonly activeRequestsService: ActiveRequestsService = inject(ActiveRequestsService);
 
   @Input({required: true})
   public request!: RequestModel;
@@ -49,4 +52,7 @@ export class RequestLinkComponent implements OnInit {
     this.requestDeleted.emit(requestUuid);
   }
 
+  addToActiveRequests(request: RequestModel) {
+    this.activeRequestsService.selectRequest(request);
+  }
 }

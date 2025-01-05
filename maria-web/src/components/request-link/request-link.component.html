@@ -9,7 +9,7 @@
 <!--</div>-->
 
 <li nz-menu-item nzMatchRouter>
-  <a class="request-link__details" [routerLink]="'request/'+request.id">
+  <a class="request-link__details" (click)="addToActiveRequests(request)">
     <span class="request-link__method" [class]="'text-'+getRequestMethodColor()">{{ request.method }}</span>
     <span class="request-link__name">{{ request.name }}</span>
   </a>

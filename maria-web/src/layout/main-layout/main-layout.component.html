@@ -5,7 +5,7 @@
         <span class="header-trigger" (click)="isCollapsed = !isCollapsed" nz-icon
               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'">
          </span>
-        <button nz-button>New</button>
+        <button nz-button (click)="createNewRequest()">New</button>
       </div>
       <div class="actions">
           <span class="header-trigger trigger" nz-icon [nzType]="'setting'" nz-tooltip nzTooltipPlacement="bottom"

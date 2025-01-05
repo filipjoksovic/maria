@@ -1,0 +1,16 @@
+@if (tabs()) {
+  <nz-tabset
+    [(nzSelectedIndex)]="selectedIndex"
+    nzType="editable-card"
+    (nzAdd)="newTab()"
+    (nzClose)="closeTab($event)"
+  >
+    @for (tab of tabs(); track tab.data.id) {
+      <nz-tab nzClosable [nzTitle]="tab.data.name">
+        <app-request (requestChange)="handleRequestChange($event)" [requestState]="tab"></app-request>
+      </nz-tab>
+    }
+  </nz-tabset>
+} @else {
+  <nz-empty nzNotFoundImage="simple"></nz-empty>
+}

@@ -4,6 +4,7 @@ import {MakeRequestComponent} from "../pages/make-request/make-request.component
 import {SignupPageComponent} from "../pages/signup-page/signup-page.component";
 import {MainLayoutComponent} from "../layout/main-layout/main-layout.component";
 import {FormsLayoutComponent} from "../layout/forms-layout/forms-layout.component";
+import {RequestsPageComponent} from "../pages/requests-page/requests-page.component";
 
 export const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: '/welcome'},
@@ -26,6 +27,10 @@ export const routes: Routes = [
       {
         path: "request/:id",
         component: MakeRequestComponent
+      },
+      {
+        path: 'requests',
+        component: RequestsPageComponent
       }
     ]
   }

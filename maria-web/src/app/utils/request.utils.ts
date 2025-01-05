@@ -3,6 +3,9 @@ import {HttpHeaders, HttpParams} from "@angular/common/http";
 import {isValidQueryParameter, mapToHeaderParameter, mapToQueryParameter, trimParameters} from "./params.utils";
 import {securityConfigs} from "../model/request-security.config";
 import {RequestSecurity} from "../model/request-security.enum";
+import {DataState, StatefulData} from "../model/core/stateful-data.model";
+import {RequestTypeEnum} from "../model/request-type.enum";
+import {RequestExecutionStateEnum, RequestModelState} from "../model/state/request-model.state";
 
 export const createHttpParams = (requestModel: RequestModel): HttpParams => {
   let httpParams = new HttpParams();
@@ -33,3 +36,59 @@ export const generateRequestUrl = (request: RequestModel): string => {
   url = url.trim();
   return url;
 }
+
+export const getBlankRequest: () => StatefulData<RequestModelState> =
+  () => {
+    return {
+      state: DataState.LOADED,
+      data: {
+        id: crypto.randomUUID(),
+        name: "New Request",
+        url: '',
+        method: RequestTypeEnum.GET,
+        type: RequestSecurity.HTTP,
+        params: [{
+          position: 1,
+          name: '',
+          text_value: '',
+          description: '',
+          select: true
+        }],
+        headers: [
+          {
+            position: 1,
+            name: '',
+            text_value: '',
+            select: true,
+            description: ''
+          }
+        ],
+        state: RequestExecutionStateEnum.LOADED
+      }
+    };
+  }
+
+export const getStatelessRequest = (): RequestModelState => ({
+  id: crypto.randomUUID(),
+  name: "New Request",
+  url: '',
+  method: RequestTypeEnum.GET,
+  type: RequestSecurity.HTTP,
+  params: [{
+    position: 1,
+    name: '',
+    text_value: '',
+    description: '',
+    select: true
+  }],
+  headers: [
+    {
+      position: 1,
+      name: '',
+      text_value: '',
+      select: true,
+      description: ''
+    }
+  ],
+  state: RequestExecutionStateEnum.LOADED
+});
